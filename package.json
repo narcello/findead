@@ -1,11 +1,17 @@
 {
   "name": "findead",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Dead react components finder",
   "preferGlobal": true,
   "bin": {
     "findead": "findead.sh"
   },
+  "author": {
+    "name": "Marcello Silva",
+    "email": "marcellovcs@gmail.com",
+    "url": "https://github.com/narcello"
+  },
+  "repository": "https://github.com/narcello/findead",
   "keywords": [
     "dead",
     "react",
@@ -14,6 +20,5 @@
     "sh",
     "unused"
   ],
-  "author": "narcello",
   "license": "ISC"
 }
