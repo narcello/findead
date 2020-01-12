@@ -1,0 +1,19 @@
+{
+  "name": "findead",
+  "version": "1.0.0",
+  "description": "Dead react components finder",
+  "preferGlobal": true,
+  "bin": {
+    "findead": "findead.sh"
+  },
+  "keywords": [
+    "dead",
+    "react",
+    "components",
+    "bash",
+    "sh",
+    "unused"
+  ],
+  "author": "narcello",
+  "license": "ISC"
+}
