@@ -28,6 +28,3 @@ findead ~/path/to/get/components
  ```bash
 findead ~/path/to/get/components/{folder1,folder2,...,folderN} ~/path/to/search/usages
 ```
-
-#### Obs
-* Today `findead` module just work's with class components
