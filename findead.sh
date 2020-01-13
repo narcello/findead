@@ -8,38 +8,45 @@ LS=$(find $FOLDERS_TO_SEARCH_COMPONENTS -type f \( -name "*.js" -o -name "*.jsx"
 QNTY_COMP_UNUSED=0
 AUX_QNTY=0
 
-sleep 10 &
+sleep 60 &
 PID=$!
 i=1
 sp="/-\|"
 echo -n ' '
 while [ -d /proc/$PID ]; do
   printf "\b${sp:i++%${#sp}:1}"
+  sleep 0.1s
 done
 
 F_NAME=''
 getClassComponents() {
   CLASS_COMPONENT=$(sudo cat ${F_NAME} | grep -oP '(?<=class).*?(Component)' | awk '{ print $1 }')
-  COMPONENTS+=($CLASS_COMPONENT)
+  USED_IN_SAME_FILE=$(grep "<${CLASS_COMPONENT}" ${F_NAME})
+  if [ ! -z "$CLASS_COMPONENT" ]; then
+    [[ -z "$USED_IN_SAME_FILE" ]] && COMPONENTS+=($CLASS_COMPONENT)
+  fi
   AUX=${COMPONENTS[@]}
+}
+
+CURRENT_FUNCTIONS=''
+checkFunctions() {
+  for FUNCTION in $CURRENT_FUNCTIONS; do
+    FIRST_LETTER_FUNCTION_COMPONENT="$(echo "$FUNCTION" | head -c 1)"
+    [[ "$FIRST_LETTER_FUNCTION_COMPONENT" =~ [A-Z] ]] &&
+      USED_IN_SAME_FILE=$(grep "<${FUNCTION}" ${F_NAME}) &&
+      [[ -z "$USED_IN_SAME_FILE" ]] && COMPONENTS+=($FUNCTION)
+    AUX=${COMPONENTS[@]}
+  done
 }
 
 getES5FunctionComponents() {
-  FUNCTIONS=$(sudo cat ${F_NAME} | grep -oP '(?<=function ).*?(?=\()')
-  for FUNCTION in $FUNCTIONS; do
-    FIRST_LETTER_FUNCTION_COMPONENT="$(echo "$FUNCTION" | head -c 1)"
-    [[ "$FIRST_LETTER_FUNCTION_COMPONENT" =~ [A-Z] ]] && COMPONENTS+=($FUNCTION)
-  done
-  AUX=${COMPONENTS[@]}
+  CURRENT_FUNCTIONS=$(sudo cat ${F_NAME} | grep -oP '(?<=function ).*?(?=\()')
+  checkFunctions
 }
 
 getES6FunctionComponents() {
-  FUNCTIONS=$(sudo cat ${F_NAME} | grep -oP '(?<=const ).*?(?=\()' | awk '{ print $1 }')
-  for FUNCTION in $FUNCTIONS; do
-    FIRST_LETTER_FUNCTION_COMPONENT="$(echo "$FUNCTION" | head -c 1)"
-    [[ "$FIRST_LETTER_FUNCTION_COMPONENT" =~ [A-Z] ]] && COMPONENTS+=($FUNCTION)
-  done
-  AUX=${COMPONENTS[@]}
+  CURRENT_FUNCTIONS=$(sudo cat ${F_NAME} | grep -oP '(?<=const ).*?(?=\()' | awk '{ print $1 }')
+  checkFunctions
 }
 
 getFunctionComponents() {
@@ -71,7 +78,7 @@ finalChapter() {
   if [ $QNTY_COMP_UNUSED -eq 0 ]; then
     echo -e "\e[32mYou don't have unused components :) \e[39m"
   else
-    echo -e "\e[33m$QNTY_COMP_UNUSED unused components :/ \e[39m"
+    echo -e "\e[33m$QNTY_COMP_UNUSED possible dead components :/ \e[39m"
   fi
 }
 
