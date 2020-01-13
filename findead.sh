@@ -24,16 +24,30 @@ getClassComponents() {
   AUX=${COMPONENTS[@]}
 }
 
+getES5FunctionComponents() {
+  FUNCTIONS=$(sudo cat ${F_NAME} | grep -oP '(?<=function ).*?(?=\()')
+  for FUNCTION in $FUNCTIONS; do
+    FIRST_LETTER_FUNCTION_COMPONENT="$(echo "$FUNCTION" | head -c 1)"
+    [[ "$FIRST_LETTER_FUNCTION_COMPONENT" =~ [A-Z] ]] && COMPONENTS+=($FUNCTION)
+  done
+  AUX=${COMPONENTS[@]}
+}
+
+getES6FunctionComponents() {
+  FUNCTIONS=$(sudo cat ${F_NAME} | grep -oP '(?<=const ).*?(?=\()' | awk '{ print $1 }')
+  for FUNCTION in $FUNCTIONS; do
+    FIRST_LETTER_FUNCTION_COMPONENT="$(echo "$FUNCTION" | head -c 1)"
+    [[ "$FIRST_LETTER_FUNCTION_COMPONENT" =~ [A-Z] ]] && COMPONENTS+=($FUNCTION)
+  done
+  AUX=${COMPONENTS[@]}
+}
+
 getFunctionComponents() {
   IS_REACT_FILE=$(sudo cat ${F_NAME} | grep -oP '(?<=import).*?(React)')
   if [ ! -z "$IS_REACT_FILE" ]; then
-    FUNCTIONS=$(sudo cat ${F_NAME} | grep -oP '(?<=function ).*?(?=\()')
-    for FUNCTION in $FUNCTIONS; do
-      FIRST_LETTER_FUNCTION_COMPONENT="$(echo "$FUNCTION" | head -c 1)"
-      [[ "$FIRST_LETTER_FUNCTION_COMPONENT" =~ [A-Z] ]] && COMPONENTS+=($FUNCTION)
-    done
+    getES5FunctionComponents
+    getES6FunctionComponents
   fi
-  AUX=${COMPONENTS[@]}
 }
 
 getComponents() {
