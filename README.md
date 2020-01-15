@@ -1,20 +1,33 @@
-# findead
+# :mag: findead
 Dead react components finder
 
-## How install
+## :dart: Motivation: *Dead Components*
+Many times in large or even small projects, we forgot some components in code that we never will gone use and we never take time to search one by one and remove.
+
+## :camera: Demonstration
+![](https://media.giphy.com/media/SSWm8GnJVCkLXvOnSl/giphy.gif)
+
+## :computer: Tech
+Just bash :) 
+
+## :inbox_tray: Install
 * Npm
 ```sh 
 npm i -g findead
 ```
+* Yarn
+```sh 
+yarn add findead
+```
 
-## Usage
+## :hammer: Usage
 ```bash
 findead <folder_to_get_components> <folder_to_find_usages>
 ```
 1. First, pass folder to get all of your components
 2. Pass folder to search usages
 
-## Examples
+## :zap: Examples
 #### With two arguments
 ```bash
 findead ~/path/to/get/components ~/path/to/search/usages
