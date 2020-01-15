@@ -5,7 +5,7 @@ Dead react components finder
 Many times in large or even small projects, we forgot some components in code that we never will gone use and we never take time to search one by one and remove.
 
 ## :camera: Demonstration
-![](https://media.giphy.com/media/SSWm8GnJVCkLXvOnSl/giphy.gif)
+![](https://media.giphy.com/media/VF63bHYe1jUZdRGkYd/giphy.gif)
 
 ## :computer: Tech
 Just bash :) 
