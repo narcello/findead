@@ -2,7 +2,7 @@
 Dead react components finder
 
 ## :dart: Motivation: *Dead Components*
-Many times in large or even small projects, we forgot some components in code that we never will gone use and we never take time to search one by one and remove.
+Many times in large or even small projects, we forgot some components in code that we'll never use and we never take time to search one by one and remove.
 
 ## :camera: Demonstration
 ![](https://media.giphy.com/media/iFfljysdC7VDyuFh4r/giphy.gif)
