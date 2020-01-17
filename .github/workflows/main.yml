@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
   test:
 
-    runs-on: [ubuntu-latest, macos-latest]
+    runs-on: macos-latest
     
     steps:
     - uses: mig4/setup-bats@v1.0.1
