@@ -3,11 +3,11 @@ name: CI
 on: [pull_request]
 
 jobs:
-  build:
+  test:
 
-    runs-on: ubuntu-latest
-
+    runs-on: [ubuntu-latest, macos-latest]
+    
     steps:
-      - name: shellcheck
-      - uses: ludeeus/action-shellcheck@0.1.0
-      - run: bats ~/findead/tests/index.bats
+    - uses: mig4/setup-bats@v1.0.1
+    - name: Setup BATS testing framework
+      run: bats ~/findead/tests/index.bats
