@@ -11,8 +11,8 @@ AUX_COUNTER=0
 echo 'Findead are looking for components...' &&
   FILE_PATH=''
 getClassComponents() {
-  CLASS_COMPONENT=$(cat ${FILE_PATH} | grep -oP '(?<=class).*?(Component)' | awk '{ print $1 }')
-  USED_IN_SAME_FILE=$(grep "<${CLASS_COMPONENT}" ${FILE_PATH})
+  CLASS_COMPONENT=$(cat ${FILE_PATH} | perl -nle'print $& while m{(?<=class).*?(Component)}g' | awk '{ print $1 }')
+  USED_IN_SAME_FILE=$(perl -nle'print if m{<'$CLASS_COMPONENT'}' ${FILE_PATH})
   if [ ! -z "$CLASS_COMPONENT" ]; then
     [[ -z "$USED_IN_SAME_FILE" ]] && COMPONENTS+=($CLASS_COMPONENT)
   fi
@@ -22,26 +22,28 @@ getClassComponents() {
 CURRENT_FUNCTIONS=''
 checkFunctions() {
   for FUNCTION in $CURRENT_FUNCTIONS; do
-    FIRST_LETTER_FUNCTION_COMPONENT="$(echo "$FUNCTION" | head -c 1)"
-    USED_IN_SAME_FILE=$(grep "<${FUNCTION}" ${FILE_PATH})
-    [[ "$FIRST_LETTER_FUNCTION_COMPONENT" =~ [A-Z] ]] &&
-      [[ -z "$USED_IN_SAME_FILE" ]] && COMPONENTS+=($FUNCTION)
+    if [[ ! $FUNCTION =~ ^(\[|\]|\{|\})$ ]]; then
+      FIRST_LETTER_FUNCTION_COMPONENT="$(echo "$FUNCTION" | head -c 1)"
+      USED_IN_SAME_FILE=$(perl -nle'print if m{<'$FUNCTION'}' ${FILE_PATH})
+      [[ "$FIRST_LETTER_FUNCTION_COMPONENT" =~ [A-Z] ]] &&
+        [[ -z "$USED_IN_SAME_FILE" ]] && COMPONENTS+=($FUNCTION)
+    fi
     AUX_ARRAY_COMPONENTS=${COMPONENTS[@]}
   done
 }
 
 getES5FunctionComponents() {
-  CURRENT_FUNCTIONS=$(cat ${FILE_PATH} | grep -oP '(?<=function ).*?(?=\()')
+  CURRENT_FUNCTIONS=$(cat ${FILE_PATH} | perl -nle'print $& while m{(?<=function ).*?(?=\()}g')
   checkFunctions
 }
 
 getES6FunctionComponents() {
-  CURRENT_FUNCTIONS=$(cat ${FILE_PATH} | grep -oP '(?<=const ).*?(?=\()' | awk '{ print $1 }')
+  CURRENT_FUNCTIONS=$(cat ${FILE_PATH} | perl -nle'print $& while m{(?<=const ).*?(?= \= \(.*\) \=>)}g' | awk '{ print $1 }')
   checkFunctions
 }
 
 getFunctionComponents() {
-  IS_REACT_FILE=$(cat ${FILE_PATH} | grep -oP '(?<=import).*?(React)')
+  IS_REACT_FILE=$(cat ${FILE_PATH} | perl -nle'print $& while m{(?<=import).*?(React)}g')
   if [ ! -z "$IS_REACT_FILE" ]; then
     getES5FunctionComponents
     getES6FunctionComponents
@@ -58,9 +60,9 @@ getComponents() {
 
 searchImports() {
   GREP_RECURSIVE_RESULT=''
-  for i in ${COMPONENTS[@]}; do
-    GREP_RECURSIVE_RESULT=$(grep -r -oP '(?<=import).*?('$i' .*from)' $FOLDER_TO_SEARCH_IMPORTS)
-    [[ -z "$GREP_RECURSIVE_RESULT" ]] && echo -e "\e[39m$i -> \e[33mUNUSED COMPONENT" && ((COUNTER_UNUSED_COMPONENTS++))
+  for COMPONENT in ${COMPONENTS[@]}; do
+    GREP_RECURSIVE_RESULT=$(find ${FOLDER_TO_SEARCH_IMPORTS} -type f -exec cat {} + | perl -nle'print $& while m{(?<=import).*?('$COMPONENT' .*from)}g')
+    [[ -z "$GREP_RECURSIVE_RESULT" ]] && echo -e "\e[39m$COMPONENT -> \e[33mUNUSED COMPONENT" && ((COUNTER_UNUSED_COMPONENTS++))
     AUX_COUNTER=$COUNTER_UNUSED_COMPONENTS
   done
 }
