@@ -11,7 +11,7 @@ AUX_COUNTER=0
 echo 'Findead are looking for components...' &&
   FILE_PATH=''
 getClassComponents() {
-  CLASS_COMPONENT=$(cat ${FILE_PATH} | perl -nle'print $& while m{(?<=class).*?(Component)}g' | awk '{ print $1 }')
+  CLASS_COMPONENT=$(cat ${FILE_PATH} | grep -o '(?<=class).*?(Component)' | awk '{ print $1 }')
   USED_IN_SAME_FILE=$(perl -nle'print if m{<'$CLASS_COMPONENT'}' ${FILE_PATH})
   if [ ! -z "$CLASS_COMPONENT" ]; then
     [[ -z "$USED_IN_SAME_FILE" ]] && COMPONENTS+=($CLASS_COMPONENT)
@@ -24,7 +24,7 @@ checkFunctions() {
   for FUNCTION in $CURRENT_FUNCTIONS; do
     if [[ ! $FUNCTION =~ ^(\[|\]|\{|\})$ ]]; then
       FIRST_LETTER_FUNCTION_COMPONENT="$(echo "$FUNCTION" | head -c 1)"
-      USED_IN_SAME_FILE=$(perl -nle'print if m{<'$FUNCTION'}' ${FILE_PATH})
+      USED_IN_SAME_FILE=$(grep -o "<$FUNCTION" ${FILE_PATH})
       [[ "$FIRST_LETTER_FUNCTION_COMPONENT" =~ [A-Z] ]] &&
         [[ -z "$USED_IN_SAME_FILE" ]] && COMPONENTS+=($FUNCTION)
     fi
@@ -33,17 +33,17 @@ checkFunctions() {
 }
 
 getES5FunctionComponents() {
-  CURRENT_FUNCTIONS=$(cat ${FILE_PATH} | perl -nle'print $& while m{(?<=function ).*?(?=\()}g')
+  CURRENT_FUNCTIONS=$(cat ${FILE_PATH} | grep -o '(?<=function ).*?(?=\()')
   checkFunctions
 }
 
 getES6FunctionComponents() {
-  CURRENT_FUNCTIONS=$(cat ${FILE_PATH} | perl -nle'print $& while m{(?<=const ).*?(?= \= \(.*\) \=>)}g' | awk '{ print $1 }')
+  CURRENT_FUNCTIONS=$(cat ${FILE_PATH} | grep -o '(?<=const ).*?(?= \= \(.*\) \=>)' | awk '{ print $1 }')
   checkFunctions
 }
 
 getFunctionComponents() {
-  IS_REACT_FILE=$(cat ${FILE_PATH} | perl -nle'print $& while m{(?<=import).*?(React)}g')
+  IS_REACT_FILE=$(cat ${FILE_PATH} | grep -o '(?<=import).*?(React)')
   if [ ! -z "$IS_REACT_FILE" ]; then
     getES5FunctionComponents
     getES6FunctionComponents
