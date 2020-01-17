@@ -11,8 +11,8 @@ AUX_COUNTER=0
 echo 'Findead are looking for components...' &&
   FILE_PATH=''
 getClassComponents() {
-  CLASS_COMPONENT=$(cat ${FILE_PATH} | grep -o '(?<=class).*?(Component)' | awk '{ print $1 }')
-  USED_IN_SAME_FILE=$(perl -nle'print if m{<'$CLASS_COMPONENT'}' ${FILE_PATH})
+  CLASS_COMPONENT=$(cat ${FILE_PATH} | grep -o "class.*Component" | awk '{ print $1 }')
+  USED_IN_SAME_FILE=$(grep -o "<$CLASS_COMPONENT" ${FILE_PATH})
   if [ ! -z "$CLASS_COMPONENT" ]; then
     [[ -z "$USED_IN_SAME_FILE" ]] && COMPONENTS+=($CLASS_COMPONENT)
   fi
@@ -33,17 +33,17 @@ checkFunctions() {
 }
 
 getES5FunctionComponents() {
-  CURRENT_FUNCTIONS=$(cat ${FILE_PATH} | grep -o '(?<=function ).*?(?=\()')
+  CURRENT_FUNCTIONS=$(cat ${FILE_PATH} | grep -o "function.*(" | awk '{  print $2 }' | head -c 1)
   checkFunctions
 }
 
 getES6FunctionComponents() {
-  CURRENT_FUNCTIONS=$(cat ${FILE_PATH} | grep -o '(?<=const ).*?(?= \= \(.*\) \=>)' | awk '{ print $1 }')
+  CURRENT_FUNCTIONS=$(cat ${FILE_PATH} | grep -o "const.*= (.*) =>" | awk '{  print $2 }')
   checkFunctions
 }
 
 getFunctionComponents() {
-  IS_REACT_FILE=$(cat ${FILE_PATH} | grep -o '(?<=import).*?(React)')
+  IS_REACT_FILE=$(cat ${FILE_PATH} | grep 'import.*React')
   if [ ! -z "$IS_REACT_FILE" ]; then
     getES5FunctionComponents
     getES6FunctionComponents
@@ -60,8 +60,9 @@ getComponents() {
 
 searchImports() {
   GREP_RECURSIVE_RESULT=''
+  echo ${COMPONENTS[@]}
   for COMPONENT in ${COMPONENTS[@]}; do
-    GREP_RECURSIVE_RESULT=$(find ${FOLDER_TO_SEARCH_IMPORTS} -type f -exec cat {} + | perl -nle'print $& while m{(?<=import).*?('$COMPONENT' .*from)}g')
+    GREP_RECURSIVE_RESULT=$(find ${FOLDER_TO_SEARCH_IMPORTS} -type f -exec cat {} + | grep -o "import.*A .*from")
     [[ -z "$GREP_RECURSIVE_RESULT" ]] && echo -e "\e[39m$COMPONENT -> \e[33mUNUSED COMPONENT" && ((COUNTER_UNUSED_COMPONENTS++))
     AUX_COUNTER=$COUNTER_UNUSED_COMPONENTS
   done
