@@ -1,0 +1,13 @@
+name: CI
+
+on: [pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: shellcheck
+      - uses: ludeeus/action-shellcheck@0.1.0
+      - run: bats ~/findead/tests/index.bats
