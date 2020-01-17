@@ -20,5 +20,10 @@
     "sh",
     "unused"
   ],
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "bats-assert": "git+https://github.com/ztombol/bats-assert.git",
+    "bats-support": "git+https://github.com/ztombol/bats-support.git",
+    "react": "^16.12.0"
+  }
 }

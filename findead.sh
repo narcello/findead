@@ -8,9 +8,8 @@ FIND_RETURN=$(find $FOLDERS_TO_SEARCH_COMPONENTS -type f \( -name "*.js" -o -nam
 COUNTER_UNUSED_COMPONENTS=0
 AUX_COUNTER=0
 
-echo 'Findead are looking for components...' && \
-
-FILE_PATH=''
+echo 'Findead are looking for components...' &&
+  FILE_PATH=''
 getClassComponents() {
   CLASS_COMPONENT=$(cat ${FILE_PATH} | grep -oP '(?<=class).*?(Component)' | awk '{ print $1 }')
   USED_IN_SAME_FILE=$(grep "<${CLASS_COMPONENT}" ${FILE_PATH})
@@ -24,8 +23,8 @@ CURRENT_FUNCTIONS=''
 checkFunctions() {
   for FUNCTION in $CURRENT_FUNCTIONS; do
     FIRST_LETTER_FUNCTION_COMPONENT="$(echo "$FUNCTION" | head -c 1)"
+    USED_IN_SAME_FILE=$(grep "<${FUNCTION}" ${FILE_PATH})
     [[ "$FIRST_LETTER_FUNCTION_COMPONENT" =~ [A-Z] ]] &&
-      USED_IN_SAME_FILE=$(grep "<${FUNCTION}" ${FILE_PATH}) &&
       [[ -z "$USED_IN_SAME_FILE" ]] && COMPONENTS+=($FUNCTION)
     AUX_ARRAY_COMPONENTS=${COMPONENTS[@]}
   done
@@ -60,7 +59,7 @@ getComponents() {
 searchImports() {
   GREP_RECURSIVE_RESULT=''
   for i in ${COMPONENTS[@]}; do
-    GREP_RECURSIVE_RESULT=$(grep -r -oP '(?<=import).*?('$i')' $FOLDER_TO_SEARCH_IMPORTS)
+    GREP_RECURSIVE_RESULT=$(grep -r -oP '(?<=import).*?('$i' .*from)' $FOLDER_TO_SEARCH_IMPORTS)
     [[ -z "$GREP_RECURSIVE_RESULT" ]] && echo -e "\e[39m$i -> \e[33mUNUSED COMPONENT" && ((COUNTER_UNUSED_COMPONENTS++))
     AUX_COUNTER=$COUNTER_UNUSED_COMPONENTS
   done
@@ -68,9 +67,9 @@ searchImports() {
 
 showResult() {
   if [ $COUNTER_UNUSED_COMPONENTS -eq 0 ]; then
-    echo -e "\e[32mYou don't have unused components :) \e[39m"
+    echo -e "No unused components found"
   else
-    echo -e "\e[33m$COUNTER_UNUSED_COMPONENTS possible dead components :/ \e[39m"
+    echo -e "$COUNTER_UNUSED_COMPONENTS possible dead components :/"
   fi
 }
 
