@@ -12,4 +12,4 @@ jobs:
     - name: Install Bats
       run: ./scripts/install_bats.sh
     - name: Run tests
-      run: bats ./tests/index.sh
+      run: bats ./tests/index.bats
