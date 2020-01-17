@@ -8,6 +8,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: shellcheck
-      - uses: ludeeus/action-shellcheck@0.1.0
-      - run: bats ~/findead/tests/index.bats
+    - uses: ludeeus/action-shellcheck@0.1.0
+    - name: shellcheck
+      run: bats ~/findead/tests/index.bats
