@@ -10,8 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Know my location
-      run: $PWD 
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+      run: $PWD
+    - name: Install Bats
+      run: ./scripts/install_bats.sh
+    - name: Run tests
+      run: bats ./tests/index.sh
