@@ -1,6 +1,6 @@
 {
   "name": "findead",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Dead react components finder",
   "preferGlobal": true,
   "bin": {
@@ -23,7 +23,6 @@
   "license": "ISC",
   "devDependencies": {
     "bats-assert": "git+https://github.com/ztombol/bats-assert.git",
-    "bats-support": "git+https://github.com/ztombol/bats-support.git",
-    "react": "^16.12.0"
+    "bats-support": "git+https://github.com/ztombol/bats-support.git"
   }
 }
