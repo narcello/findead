@@ -1,5 +1,5 @@
 import React from "react";
 
-function E(props) { }
+function TestComponentE(props) { }
 
-export default E;
+export default TestComponentE;

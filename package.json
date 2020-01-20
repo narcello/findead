@@ -1,6 +1,6 @@
 {
   "name": "findead",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Dead react components finder",
   "preferGlobal": true,
   "bin": {
@@ -10,6 +10,9 @@
     "name": "Marcello Silva",
     "email": "marcellovcs@gmail.com",
     "url": "https://github.com/narcello"
+  },
+  "scripts": {
+    "test": "bats ./tests/index.bats"
   },
   "repository": "https://github.com/narcello/findead",
   "keywords": [

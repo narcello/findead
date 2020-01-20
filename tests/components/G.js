@@ -1,5 +1,5 @@
 import React from "react";
 
-const G = () => { }
+const TestComponentG = () => { }
 
-export default G;
+export default TestComponentG;
