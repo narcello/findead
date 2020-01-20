@@ -9,10 +9,9 @@ COUNTER_UNUSED_COMPONENTS=0
 AUX_COUNTER=0
 
 echo 'Findead are looking for components...' &&
-
-FILE_PATH=''
+  FILE_PATH=''
 getClassComponents() {
-  CLASS_COMPONENT=$(cat ${FILE_PATH} | grep -o "class.*Component" | awk '{ print $1 }')
+  CLASS_COMPONENT=$(cat ${FILE_PATH} | grep -o "class.*Component" | awk '{ print $2 }')
   USED_IN_SAME_FILE=$(grep -o "<$CLASS_COMPONENT" ${FILE_PATH})
   if [ ! -z "$CLASS_COMPONENT" ]; then
     [[ -z "$USED_IN_SAME_FILE" ]] && COMPONENTS+=($CLASS_COMPONENT)
@@ -34,7 +33,7 @@ checkFunctions() {
 }
 
 getES5FunctionComponents() {
-  CURRENT_FUNCTIONS=$(cat ${FILE_PATH} | grep -o "function.*(" | awk '{  print $2 }' | head -c 1)
+  CURRENT_FUNCTIONS=$(cat ${FILE_PATH} | grep -o "function.*(" | awk '{  print $2 }' | cut -d "(" -f 1)
   checkFunctions
 }
 
