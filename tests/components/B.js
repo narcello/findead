@@ -1,5 +1,5 @@
 import { Component } from "react";
 
-class B extends Component { }
+class TestComponentB extends Component { }
 
-export default B;
+export default TestComponentB;

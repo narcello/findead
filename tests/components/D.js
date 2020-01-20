@@ -1,5 +1,5 @@
 import React from "react";
 
-function D() { }
+function TestComponentD() { }
 
-export default D;
+export default TestComponentD;

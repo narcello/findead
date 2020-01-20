@@ -11,6 +11,9 @@
     "email": "marcellovcs@gmail.com",
     "url": "https://github.com/narcello"
   },
+  "scripts": {
+    "test": "bats ./tests/index.bats"
+  },
   "repository": "https://github.com/narcello/findead",
   "keywords": [
     "dead",
