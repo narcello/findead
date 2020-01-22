@@ -85,7 +85,7 @@ elif [[ $1 == "--help" || $1 == "-h" ]]; then
 
   findead is used for looking for possible unused components(Dead components)
 
-  usage: 
+  usage:
     findead path/to/search/components path/to/find/imports(optional)
     findead -h | --help
     findead -v | --version
