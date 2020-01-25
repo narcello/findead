@@ -6,9 +6,10 @@ COUNTER_UNUSED_COMPONENTS=0
 AUX_COUNTER=0
 for FOLDER_TO_SEARCH_IMPORTS; do true; done
 FIND_RETURN=''
+FIRST_ARGUMENT=$1
 
 searchFiles() {
-  FIND_RETURN=$(find $1 -type f \( -name "*.js" -o -name "*.jsx" \))
+  FIND_RETURN=$(find $FIRST_ARGUMENT -type f \( -name "*.js" -o -name "*.jsx" \))
 }
 
 FILE_PATH=''
@@ -78,9 +79,9 @@ showResult() {
 }
 
 PACKAGE_VERSION=$(cat ./package.json | grep '"version": .*,' | awk '{ print $2 }' | cut -d '"' -f 2)
-if [[ $1 == "--version" || $1 == "-v" ]]; then
+if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
   echo "findead@$PACKAGE_VERSION"
-elif [[ $1 == "--help" || $1 == "-h" ]]; then
+elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
   cat <<EOF
 
   findead is used for looking for possible unused components(Dead components)
