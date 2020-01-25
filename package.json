@@ -12,7 +12,9 @@
     "url": "https://github.com/narcello"
   },
   "scripts": {
-    "test": "bats ./tests/index.bats"
+    "test": "bats ./tests/index.bats",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "repository": "https://github.com/narcello/findead",
   "keywords": [
@@ -26,6 +28,7 @@
   "license": "ISC",
   "devDependencies": {
     "bats-assert": "git+https://github.com/ztombol/bats-assert.git",
-    "bats-support": "git+https://github.com/ztombol/bats-support.git"
+    "bats-support": "git+https://github.com/ztombol/bats-support.git",
+    "vuepress": "^1.2.0"
   }
 }
