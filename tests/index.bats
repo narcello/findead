@@ -27,26 +27,10 @@ load '../node_modules/bats-assert/load'
 
 @test 'Test --help predicate' {
   run echo "$( ./findead.sh --help)"
-  assert_output "
-  findead is used for looking for possible unused components(Dead components)
-
-  usage: 
-    findead path/to/search/components path/to/find/imports(optional)
-    findead -h | --help
-    findead -v | --version
-
-  report bugs to: https://github.com/narcello/findead/issues"
+  assert_line --partial 'findead -h | --help'
 }
 
 @test 'Test -h predicate' {
   run echo "$( ./findead.sh -h)"
-  assert_output "
-  findead is used for looking for possible unused components(Dead components)
-
-  usage: 
-    findead path/to/search/components path/to/find/imports(optional)
-    findead -h | --help
-    findead -v | --version
-
-  report bugs to: https://github.com/narcello/findead/issues"
+  assert_line --partial 'findead -h | --help'
 }
