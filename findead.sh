@@ -79,7 +79,7 @@ showResult() {
 }
 
 if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
-  echo "findead@0.1.1"
+  echo "findead@0.1.2"
 elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
   cat <<EOF
 
@@ -94,6 +94,6 @@ elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
 
 EOF
 else
-  echo 'Findead are looking for components...' &&
+  echo 'Findead is looking for components...' &&
     searchFiles && getComponents && searchImports && showResult
 fi
