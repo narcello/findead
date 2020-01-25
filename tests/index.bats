@@ -12,3 +12,25 @@ load '../node_modules/bats-assert/load'
   run echo "$( ./findead.sh ./tests/components | grep 'dead components')"
   assert_output "10 possible dead components :/"
 }
+
+@test 'Test --version predicate' {
+  PACKAGE_VERSION=$(cat ./package.json | grep '"version": .*,' | awk '{ print $2 }' | cut -d '"' -f 2)
+  run echo "$( ./findead.sh --version)"
+  assert_output "findead@$PACKAGE_VERSION"
+}
+
+@test 'Test -v predicate' {
+  PACKAGE_VERSION=$(cat ./package.json | grep '"version": .*,' | awk '{ print $2 }' | cut -d '"' -f 2)
+  run echo "$( ./findead.sh -v)"
+  assert_output "findead@$PACKAGE_VERSION"
+}
+
+@test 'Test --help predicate' {
+  run echo "$( ./findead.sh --help)"
+  assert_line --partial 'findead -h | --help'
+}
+
+@test 'Test -h predicate' {
+  run echo "$( ./findead.sh -h)"
+  assert_line --partial 'findead -h | --help'
+}

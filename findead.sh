@@ -2,14 +2,17 @@ CLASS_COMPONENT=''
 FIRST_LETTER_COMPONENT=''
 declare -a COMPONENTS
 AUX_ARRAY_COMPONENTS=''
-FOLDERS_TO_SEARCH_COMPONENTS=$1
-for FOLDER_TO_SEARCH_IMPORTS; do true; done
-FIND_RETURN=$(find $FOLDERS_TO_SEARCH_COMPONENTS -type f \( -name "*.js" -o -name "*.jsx" \))
 COUNTER_UNUSED_COMPONENTS=0
 AUX_COUNTER=0
+for FOLDER_TO_SEARCH_IMPORTS; do true; done
+FIND_RETURN=''
+FIRST_ARGUMENT=$1
 
-echo 'Findead are looking for components...' &&
-  FILE_PATH=''
+searchFiles() {
+  FIND_RETURN=$(find $FIRST_ARGUMENT -type f \( -name "*.js" -o -name "*.jsx" \))
+}
+
+FILE_PATH=''
 getClassComponents() {
   CLASS_COMPONENT=$(cat ${FILE_PATH} | grep -o "class.*Component" | awk '{ print $2 }')
   USED_IN_SAME_FILE=$(grep -o "<$CLASS_COMPONENT" ${FILE_PATH})
@@ -75,4 +78,23 @@ showResult() {
   fi
 }
 
-getComponents && searchImports && showResult
+PACKAGE_VERSION=$(cat ./package.json | grep '"version": .*,' | awk '{ print $2 }' | cut -d '"' -f 2)
+if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
+  echo "findead@$PACKAGE_VERSION"
+elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
+  cat <<EOF
+
+  findead is used for looking for possible unused components(Dead components)
+
+  usage:
+    findead path/to/search/components path/to/find/imports(optional)
+    findead -h | --help
+    findead -v | --version
+
+  report bugs to: https://github.com/narcello/findead/issues
+
+EOF
+else
+  echo 'Findead are looking for components...' &&
+    searchFiles && getComponents && searchImports && showResult
+fi
