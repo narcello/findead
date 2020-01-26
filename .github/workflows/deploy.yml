@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: GH Pages deploy
+      uses: Cecilapp/GitHub-Pages-deploy@2.0.0
     - name: Install Dependencies
       run: npm i
     - name: Deploy site
