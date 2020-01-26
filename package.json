@@ -13,8 +13,9 @@
   },
   "scripts": {
     "test": "bats ./tests/index.bats",
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "site:dev": "vuepress dev docs",
+    "site:build": "vuepress build docs",
+    "site:deploy": "sh ./scripts/deploy.sh"
   },
   "repository": "https://github.com/narcello/findead",
   "keywords": [

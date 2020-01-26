@@ -1,6 +1,7 @@
 module.exports = {
   title: 'Findead',
   description: 'Dead react components finder',
+  base: '/findead/',
   themeConfig: {
     nav: [
       { text: 'Home', link: '/' },
