@@ -1,4 +1,4 @@
-name: DEPLOY
+name: Deploy Site
 
 on:
   push:
@@ -12,5 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Install Dependencies
+      run: npm i
     - name: Deploy site
       run: npm run site:deploy
