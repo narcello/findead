@@ -8,8 +8,13 @@ load '../node_modules/bats-assert/load'
   assert_output "No unused components found"
 }
 
-@test 'Test unused component' {
+@test 'Test unused component(without imports)' {
   run echo "$( ./findead.sh ./tests/components | grep 'dead components')"
+  assert_output "10 possible dead components :/"
+}
+
+@test 'Test unused component(commented imports)' {
+  run echo "$( ./findead.sh ./tests/components ./tests/imports_commented | grep 'dead components')"
   assert_output "10 possible dead components :/"
 }
 
