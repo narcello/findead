@@ -64,7 +64,7 @@ getComponents() {
 searchImports() {
   GREP_RECURSIVE_RESULT=''
   for COMPONENT in ${COMPONENTS[@]}; do
-    GREP_RECURSIVE_RESULT=$(find ${FOLDER_TO_SEARCH_IMPORTS} -type f -exec cat {} + | grep -o "import.*A .*from")
+    GREP_RECURSIVE_RESULT=$(find ${FOLDER_TO_SEARCH_IMPORTS} -type f -exec cat {} + | grep -o "import.*$COMPONENT.*from")
     [[ -z "$GREP_RECURSIVE_RESULT" ]] && echo -e "\e[39m$COMPONENT -> \e[33mUNUSED COMPONENT" && ((COUNTER_UNUSED_COMPONENTS++))
     AUX_COUNTER=$COUNTER_UNUSED_COMPONENTS
   done

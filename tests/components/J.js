@@ -1,9 +1,9 @@
 import React from "react";
 
-const TestComponentJ = ({ prop1, prop2 }) => { }
+const TestComponentJ1 = ({ prop1, prop2 }) => { }
 
-const TestComponentK = ({ prop1, prop2 }) => {
-  return <TestComponentJ />
+const TestComponentJ2 = ({ prop1, prop2 }) => {
+  return <TestComponentJ1 />
 }
 
-export default TestComponentK;
+export default TestComponentJ2;
