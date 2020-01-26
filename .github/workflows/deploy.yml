@@ -1,0 +1,16 @@
+name: DEPLOY
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Deploy site
+      run: npm run site:deploy
