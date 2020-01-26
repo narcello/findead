@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
-git config user.email "marcellovcs@gmail.com"
-git config user.name "narcello"
+git config --global user.email "marcellovcs@gmail.com"
+git config --global user.name "narcello"
 
 set -e
 
