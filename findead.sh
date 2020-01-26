@@ -64,8 +64,11 @@ getComponents() {
 searchImports() {
   GREP_RECURSIVE_RESULT=''
   for COMPONENT in ${COMPONENTS[@]}; do
-    GREP_RECURSIVE_RESULT=$(find ${FOLDER_TO_SEARCH_IMPORTS} -type f -exec cat {} + | grep -o "import.*$COMPONENT.*from")
-    [[ -z "$GREP_RECURSIVE_RESULT" ]] && echo -e "\e[39m$COMPONENT -> \e[33mUNUSED COMPONENT" && ((COUNTER_UNUSED_COMPONENTS++))
+    GREP_RECURSIVE_RESULT=$(find ${FOLDER_TO_SEARCH_IMPORTS} -type f -exec cat {} + | grep "import.*$COMPONENT.*from")
+    COMMENTED_IMPORT=$(echo $GREP_RECURSIVE_RESULT | grep //)
+    if [ -z "$GREP_RECURSIVE_RESULT" ] || [ ! -z "$COMMENTED_IMPORT" ]; then
+      echo -e "\e[39m$COMPONENT -> \e[33mUNUSED COMPONENT" && ((COUNTER_UNUSED_COMPONENTS++))
+    fi
     AUX_COUNTER=$COUNTER_UNUSED_COMPONENTS
   done
 }
@@ -79,7 +82,7 @@ showResult() {
 }
 
 if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
-  echo "findead@0.1.2"
+  echo "findead@0.2.0"
 elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
   cat <<EOF
 
