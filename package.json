@@ -1,6 +1,6 @@
 {
   "name": "findead",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Dead react components finder",
   "preferGlobal": true,
   "bin": {
@@ -15,9 +15,11 @@
     "test": "bats ./tests/index.bats",
     "site:dev": "vuepress dev docs",
     "site:build": "vuepress build docs",
-    "site:deploy": "./scripts/deploy.sh"
+    "site:deploy": "./scripts/deploy_site.sh",
+    "npm:deploy": "./scripts/deploy_package.sh"
   },
   "repository": "https://github.com/narcello/findead",
+  "homepage": "https://narcello.github.io/findead",
   "keywords": [
     "dead",
     "react",
