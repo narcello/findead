@@ -8,6 +8,18 @@ for FOLDER_TO_SEARCH_IMPORTS; do true; done
 FIND_RETURN=''
 FIRST_ARGUMENT=$1
 
+center() {
+  termwidth="$(tput cols)"
+  padding="$(printf '%0.1s' ={1..500})"
+  printf '%*.*s %s %*.*s\n' 0 "$(((termwidth - 2 - ${#1}) / 2))" "$padding" "$1" 0 "$(((termwidth - 1 - ${#1}) / 2))" "$padding"
+}
+
+centerResult() {
+  termwidth="$(tput cols)"
+  padding="$(printf '%0.1s' ={1..500})"
+  printf "\e[0m%*.*s $2%s\e[0m %*.*s\n" 0 "$(((termwidth - 2 - ${#1}) / 2))" "$padding" "$1" 0 "$(((termwidth - 1 - ${#1}) / 2))" "$padding"
+}
+
 searchFiles() {
   FIND_RETURN=$(find $FIRST_ARGUMENT -type f \( -name "*.js" -o -name "*.jsx" \))
 }
@@ -17,7 +29,7 @@ getClassComponents() {
   CLASS_COMPONENT=$(cat ${FILE_PATH} | grep -o "class.*Component" | awk '{ print $2 }')
   USED_IN_SAME_FILE=$(grep -o "<$CLASS_COMPONENT" ${FILE_PATH})
   if [ ! -z "$CLASS_COMPONENT" ]; then
-    [[ -z "$USED_IN_SAME_FILE" ]] && COMPONENTS+=($CLASS_COMPONENT)
+    [[ -z "$USED_IN_SAME_FILE" ]] && COMPONENTS+=("$CLASS_COMPONENT;$FILE_PATH")
   fi
   AUX_ARRAY_COMPONENTS=${COMPONENTS[@]}
 }
@@ -29,7 +41,7 @@ checkFunctions() {
       FIRST_LETTER_FUNCTION_COMPONENT="$(echo "$FUNCTION" | head -c 1)"
       USED_IN_SAME_FILE=$(grep -o "<$FUNCTION" ${FILE_PATH})
       [[ "$FIRST_LETTER_FUNCTION_COMPONENT" =~ [A-Z] ]] &&
-        [[ -z "$USED_IN_SAME_FILE" ]] && COMPONENTS+=($FUNCTION)
+        [[ -z "$USED_IN_SAME_FILE" ]] && COMPONENTS+=("$FUNCTION;$FILE_PATH")
     fi
     AUX_ARRAY_COMPONENTS=${COMPONENTS[@]}
   done
@@ -64,10 +76,13 @@ getComponents() {
 searchImports() {
   GREP_RECURSIVE_RESULT=''
   for COMPONENT in ${COMPONENTS[@]}; do
-    GREP_RECURSIVE_RESULT=$(find ${FOLDER_TO_SEARCH_IMPORTS} -type f -exec cat {} + | grep "import.*$COMPONENT.*from")
+    COMPONENT_NAME=$(echo $COMPONENT | cut -d ";" -f 1)
+    COMPONENT_FILE_PATH=$(echo $COMPONENT | cut -d ";" -f 2)
+    GREP_RECURSIVE_RESULT=$(find ${FOLDER_TO_SEARCH_IMPORTS} -type f -exec grep "import.*$COMPONENT_NAME.*from" {} +)
     COMMENTED_IMPORT=$(echo $GREP_RECURSIVE_RESULT | grep //)
     if [ -z "$GREP_RECURSIVE_RESULT" ] || [ ! -z "$COMMENTED_IMPORT" ]; then
-      echo -e "\e[39m$COMPONENT -> \e[33mUNUSED COMPONENT" && ((COUNTER_UNUSED_COMPONENTS++))
+      ((COUNTER_UNUSED_COMPONENTS++))
+      printf "\e[39m%40s | \e[33m%s\n" $COMPONENT_NAME "$COMPONENT_FILE_PATH"
     fi
     AUX_COUNTER=$COUNTER_UNUSED_COMPONENTS
   done
@@ -77,7 +92,7 @@ showResult() {
   if [ $COUNTER_UNUSED_COMPONENTS -eq 0 ]; then
     echo -e "No unused components found"
   else
-    echo -e "$COUNTER_UNUSED_COMPONENTS possible dead components :/"
+    centerResult "Result $COUNTER_UNUSED_COMPONENTS possible dead components :/" '\e[33m' '\e[0m'
   fi
 }
 
@@ -97,6 +112,12 @@ elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
 
 EOF
 else
-  echo 'Findead is looking for components...' &&
-    searchFiles && getComponents && searchImports && showResult
+  tput clear
+  tput cup 1 0
+  tput rev
+  tput bold
+  center 'Findead is looking for components...'
+  tput sgr0
+  tput cup 3 0
+  searchFiles && getComponents && searchImports && showResult
 fi
