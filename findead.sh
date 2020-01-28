@@ -21,7 +21,7 @@ centerResult() {
 }
 
 searchFiles() {
-  FIND_RETURN=$(find $FIRST_ARGUMENT -type f \( -name "*.js" -o -name "*.jsx" \))
+  FIND_RETURN=$(find $FIRST_ARGUMENT -type d -name "node_modules" -prune -o -type f \( -name "*.js" -o -name "*.jsx" \) -print)
 }
 
 FILE_PATH=''
@@ -78,7 +78,7 @@ searchImports() {
   for COMPONENT in ${COMPONENTS[@]}; do
     COMPONENT_NAME=$(echo $COMPONENT | cut -d ";" -f 1)
     COMPONENT_FILE_PATH=$(echo $COMPONENT | cut -d ";" -f 2)
-    GREP_RECURSIVE_RESULT=$(find ${FOLDER_TO_SEARCH_IMPORTS} -type f \( -name "*.js" -o -name "*.jsx" \) -exec grep "import.*$COMPONENT_NAME.*from" {} +)
+    GREP_RECURSIVE_RESULT=$(echo $FIND_RETURN | xargs grep "import.*$COMPONENT_NAME.*from")
     COMMENTED_IMPORT=$(echo $GREP_RECURSIVE_RESULT | grep //)
     if [ -z "$GREP_RECURSIVE_RESULT" ] || [ ! -z "$COMMENTED_IMPORT" ]; then
       ((COUNTER_UNUSED_COMPONENTS++))
@@ -92,8 +92,10 @@ showResult() {
   if [ $COUNTER_UNUSED_COMPONENTS -eq 0 ]; then
     echo -e "No unused components found"
   else
-    centerResult "Result $COUNTER_UNUSED_COMPONENTS possible dead components :/" '\e[0m'
+    centerResult "$COUNTER_UNUSED_COMPONENTS possible dead components :/" '\e[0m'
   fi
+  BROWSED_FILES=$(echo "${FIND_RETURN/ /\n}" | wc -l)
+  centerResult "$BROWSED_FILES browsed Files"
 }
 
 if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
