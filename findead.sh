@@ -17,7 +17,7 @@ center() {
 centerResult() {
   termwidth="$(tput cols)"
   padding="$(printf '%0.1s' ={1..500})"
-  printf "\e[0m%*.*s $2%s\e[0m %*.*s\n" 0 "$(((termwidth - 2 - ${#1}) / 2))" "$padding" "$1" 0 "$(((termwidth - 1 - ${#1}) / 2))" "$padding"
+  printf "\e[0m%*.*s \e[33m%s\e[0m %*.*s\n" 0 "$(((termwidth - 2 - ${#1}) / 2))" "$padding" "$1" 0 "$(((termwidth - 1 - ${#1}) / 2))" "$padding"
 }
 
 searchFiles() {
@@ -78,7 +78,7 @@ searchImports() {
   for COMPONENT in ${COMPONENTS[@]}; do
     COMPONENT_NAME=$(echo $COMPONENT | cut -d ";" -f 1)
     COMPONENT_FILE_PATH=$(echo $COMPONENT | cut -d ";" -f 2)
-    GREP_RECURSIVE_RESULT=$(find ${FOLDER_TO_SEARCH_IMPORTS} -type f -exec grep "import.*$COMPONENT_NAME.*from" {} +)
+    GREP_RECURSIVE_RESULT=$(find ${FOLDER_TO_SEARCH_IMPORTS} -type f \( -name "*.js" -o -name "*.jsx" \) -exec grep "import.*$COMPONENT_NAME.*from" {} +)
     COMMENTED_IMPORT=$(echo $GREP_RECURSIVE_RESULT | grep //)
     if [ -z "$GREP_RECURSIVE_RESULT" ] || [ ! -z "$COMMENTED_IMPORT" ]; then
       ((COUNTER_UNUSED_COMPONENTS++))
@@ -92,7 +92,7 @@ showResult() {
   if [ $COUNTER_UNUSED_COMPONENTS -eq 0 ]; then
     echo -e "No unused components found"
   else
-    centerResult "Result $COUNTER_UNUSED_COMPONENTS possible dead components :/" '\e[33m' '\e[0m'
+    centerResult "Result $COUNTER_UNUSED_COMPONENTS possible dead components :/" '\e[0m'
   fi
 }
 
