@@ -8,6 +8,12 @@ for FOLDER_TO_SEARCH_IMPORTS; do true; done
 FIND_RETURN=''
 FIRST_ARGUMENT=$1
 
+fileSizeKB() {
+  FILE_SIZE_B=$(du -b  $1 | awk '{ print $1 }')
+  [[ ${FILE_SIZE_B} -lt 1024 ]] && echo "${FILE_SIZE_B} Bytes"
+  [[ ${FILE_SIZE_B} -gt 1023 ]] && echo "`echo ${FILE_SIZE_B}/1024 | bc` KB"
+}
+
 center() {
   termwidth="$(tput cols)"
   padding="$(printf '%0.1s' ={1..500})"
@@ -17,7 +23,7 @@ center() {
 centerResult() {
   termwidth="$(tput cols)"
   padding="$(printf '%0.1s' ={1..500})"
-  printf "\e[0m%*.*s \e[33m%s\e[0m %*.*s\n" 0 "$(((termwidth - 2 - ${#1}) / 2))" "$padding" "$1" 0 "$(((termwidth - 1 - ${#1}) / 2))" "$padding"
+  printf "\e[0m%*.*s \e[36m%s\e[0m %*.*s\n" 0 "$(((termwidth - 2 - ${#1}) / 2))" "$padding" "$1" 0 "$(((termwidth - 1 - ${#1}) / 2))" "$padding"
 }
 
 searchFiles() {
@@ -82,15 +88,17 @@ searchImports() {
     COMMENTED_IMPORT=$(echo $GREP_RECURSIVE_RESULT | grep //)
     if [ -z "$GREP_RECURSIVE_RESULT" ] || [ ! -z "$COMMENTED_IMPORT" ]; then
       ((COUNTER_UNUSED_COMPONENTS++))
-      printf "\e[39m%40s | \e[33m%s\n" $COMPONENT_NAME "$COMPONENT_FILE_PATH"
+      FILE_SIZE=$(fileSizeKB $COMPONENT_FILE_PATH)
+      printf "\e[39m%40s | \e[35m%s | \e[33m%s %s\n" $COMPONENT_NAME $COMPONENT_FILE_PATH $FILE_SIZE
     fi
     AUX_COUNTER=$COUNTER_UNUSED_COMPONENTS
   done
 }
 
 showResult() {
+  centerResult "Results"
   if [ $COUNTER_UNUSED_COMPONENTS -eq 0 ]; then
-    echo -e "No unused components found"
+   centerResult "No unused components found"
   else
     centerResult "$COUNTER_UNUSED_COMPONENTS possible dead components :/" '\e[0m'
   fi
