@@ -91,8 +91,9 @@ searchImports() {
     COMPONENT_NAME=$(echo $COMPONENT | cut -d ";" -f 1)
     COMPONENT_FILE_PATH=$(echo $COMPONENT | cut -d ";" -f 2)
     GREP_RECURSIVE_RESULT=$(echo $FIND_RETURN | xargs grep "import.*$COMPONENT_NAME.*from")
-    COMMENTED_IMPORT=$(echo $GREP_RECURSIVE_RESULT | grep //)
-    if [ -z "$GREP_RECURSIVE_RESULT" ] || [ ! -z "$COMMENTED_IMPORT" ]; then
+    COMPONENTS_OCURRENCES=$([[ -z "$GREP_RECURSIVE_RESULT" ]] && echo 0 || (echo "$GREP_RECURSIVE_RESULT" | wc -l))
+    COMMENTED_IMPORT_OCCURRENCES=$(echo "$GREP_RECURSIVE_RESULT" | grep // | wc -l)
+    if [ "$COMPONENTS_OCURRENCES" = 0 ] || [ "$COMPONENTS_OCURRENCES" = "$COMMENTED_IMPORT_OCCURRENCES" ]; then
       ((COUNTER_UNUSED_COMPONENTS++))
       FILE_SIZE=$(fileSizeKB $COMPONENT_FILE_PATH)
       printf "\e[39m%40s | \e[35m%s | \e[33m%s %s\n" $COMPONENT_NAME $COMPONENT_FILE_PATH $FILE_SIZE
