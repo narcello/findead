@@ -7,11 +7,17 @@ AUX_COUNTER=0
 for FOLDER_TO_SEARCH_IMPORTS; do true; done
 FIND_RETURN=''
 FIRST_ARGUMENT=$1
+FINDEAD_TIME=''
+TIMEFORMAT="%R"
+
+formatTime(){
+  echo "scale=2;$1/1000" | bc
+}
 
 fileSizeKB() {
-  FILE_SIZE_B=$(du -b  $1 | awk '{ print $1 }')
+  FILE_SIZE_B=$(du -b $1 | awk '{ print $1 }')
   [[ ${FILE_SIZE_B} -lt 1024 ]] && echo "${FILE_SIZE_B} Bytes"
-  [[ ${FILE_SIZE_B} -gt 1023 ]] && echo "`echo ${FILE_SIZE_B}/1024 | bc` KB"
+  [[ ${FILE_SIZE_B} -gt 1023 ]] && echo "$(echo ${FILE_SIZE_B}/1024 | bc) KB"
 }
 
 center() {
@@ -98,12 +104,17 @@ searchImports() {
 showResult() {
   centerResult "Results"
   if [ $COUNTER_UNUSED_COMPONENTS -eq 0 ]; then
-   centerResult "No unused components found"
+    centerResult "No unused components found"
   else
     centerResult "$COUNTER_UNUSED_COMPONENTS possible dead components :/" '\e[0m'
   fi
   BROWSED_FILES=$(echo "${FIND_RETURN/ /\n}" | wc -l)
-  centerResult "$BROWSED_FILES browsed Files"
+  FORMATED_TIME=$(formatTime $FINDEAD_TIME)
+  centerResult "$BROWSED_FILES browsed files in $FORMATED_TIME seconds"
+}
+
+main() {
+  searchFiles && getComponents && searchImports
 }
 
 if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
@@ -129,5 +140,10 @@ else
   center 'Findead is looking for components...'
   tput sgr0
   tput cup 3 0
-  searchFiles && getComponents && searchImports && showResult
+  start=($(date +%s%N)/1000000)
+  main
+  end=($(date +%s%N)/1000000)
+  FINDEAD_TIME=$((end-start))
+  showResult
+  unset TIMEFORMAT
 fi
