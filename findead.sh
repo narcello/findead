@@ -4,13 +4,12 @@ declare -a COMPONENTS
 AUX_ARRAY_COMPONENTS=''
 COUNTER_UNUSED_COMPONENTS=0
 AUX_COUNTER=0
-for FOLDER_TO_SEARCH_IMPORTS; do true; done
 FIND_RETURN=''
 FIRST_ARGUMENT=$1
 FINDEAD_TIME=''
 TIMEFORMAT="%R"
 
-formatTime(){
+formatTime() {
   echo "scale=2;$1/1000" | bc
 }
 
@@ -144,7 +143,7 @@ else
   start=($(date +%s%N)/1000000)
   main
   end=($(date +%s%N)/1000000)
-  FINDEAD_TIME=$((end-start))
+  FINDEAD_TIME=$((end - start))
   showResult
   unset TIMEFORMAT
 fi
