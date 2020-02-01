@@ -6,6 +6,7 @@ COUNTER_UNUSED_COMPONENTS=0
 AUX_COUNTER=0
 FIND_RETURN=''
 FIRST_ARGUMENT=$1
+PATH_TO_FIND=''
 FINDEAD_TIME=''
 TIMEFORMAT="%R"
 
@@ -32,7 +33,7 @@ centerResult() {
 }
 
 searchFiles() {
-  FIND_RETURN=$(find $FIRST_ARGUMENT -type d -name "node_modules" -prune -o -type f \( -name "*.js" -o -name "*.jsx" \) -print)
+  FIND_RETURN=$(eval $"find $PATH_TO_FIND -type d -name "node_modules" -prune -o -type f \( -name "*.js" -o -name "*.jsx" \) -print")
 }
 
 FILE_PATH=''
@@ -117,6 +118,26 @@ main() {
   searchFiles && getComponents && searchImports
 }
 
+start() {
+  TERM=xterm-color
+  tput clear
+  tput cup 1 0
+  tput rev
+  tput bold
+  center 'Findead is looking for components...'
+  tput sgr0
+  tput cup 3 0
+  start=($(date +%s%N)/1000000)
+  PATH_TO_FIND=$1
+  main
+  end=($(date +%s%N)/1000000)
+  FINDEAD_TIME=$((end - start))
+  showResult
+  unset TIMEFORMAT
+}
+
+MULTIPLE_PATHS=$(echo $FIRST_ARGUMENT | grep '\-.*m')
+
 if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
   echo "findead@0.2.1"
 elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
@@ -132,18 +153,9 @@ elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
   report bugs to: https://github.com/narcello/findead/issues
 
 EOF
+elif [[ ! -z $MULTIPLE_PATHS ]]; then
+  PATHS=$(echo $2 | cut -d '"' -f 1)
+  start $PATHS
 else
-  tput clear
-  tput cup 1 0
-  tput rev
-  tput bold
-  center 'Findead is looking for components...'
-  tput sgr0
-  tput cup 3 0
-  start=($(date +%s%N)/1000000)
-  main
-  end=($(date +%s%N)/1000000)
-  FINDEAD_TIME=$((end - start))
-  showResult
-  unset TIMEFORMAT
+  start $FIRST_ARGUMENT
 fi
