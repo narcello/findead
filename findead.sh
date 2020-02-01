@@ -1,3 +1,7 @@
+#!/bin/bash
+
+# set -e
+
 CLASS_COMPONENT=''
 FIRST_LETTER_COMPONENT=''
 declare -a COMPONENTS
@@ -9,6 +13,9 @@ FIRST_ARGUMENT=$1
 PATH_TO_FIND=''
 FINDEAD_TIME=''
 TIMEFORMAT="%R"
+FILE_PATH=''
+CURRENT_FUNCTIONS=''
+MULTIPLE_PATHS=$(echo $FIRST_ARGUMENT | grep '\-.*m')
 
 formatTime() {
   echo "scale=2;$1/1000" | bc
@@ -36,7 +43,6 @@ searchFiles() {
   FIND_RETURN=$(eval $"find $PATH_TO_FIND -type d -name "node_modules" -prune -o -type f \( -name "*.js" -o -name "*.jsx" \) -print")
 }
 
-FILE_PATH=''
 getClassComponents() {
   CLASS_COMPONENT=$(cat ${FILE_PATH} | grep -o "class.*Component" | awk '{ print $2 }')
   USED_IN_SAME_FILE=$(grep -o "<$CLASS_COMPONENT" ${FILE_PATH})
@@ -46,7 +52,6 @@ getClassComponents() {
   AUX_ARRAY_COMPONENTS=${COMPONENTS[@]}
 }
 
-CURRENT_FUNCTIONS=''
 checkFunctions() {
   for FUNCTION in $CURRENT_FUNCTIONS; do
     if [[ ! $FUNCTION =~ ^(\[|\]|\{|\})$ ]]; then
@@ -119,7 +124,7 @@ main() {
 }
 
 start() {
-  TERM=xterm-color
+  TERM=xterm-256color
   tput clear
   tput cup 1 0
   tput rev
@@ -135,8 +140,6 @@ start() {
   showResult
   unset TIMEFORMAT
 }
-
-MULTIPLE_PATHS=$(echo $FIRST_ARGUMENT | grep '\-.*m')
 
 if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
   echo "findead@0.2.1"
@@ -154,8 +157,9 @@ elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
 
 EOF
 elif [[ ! -z $MULTIPLE_PATHS ]]; then
-  PATHS=$(echo $2 | cut -d '"' -f 1)
-  start $PATHS
+  ARRAY_PARAMS=($@)
+  PATHS=${ARRAY_PARAMS[@]/$1}
+  start "$PATHS"
 else
   start $FIRST_ARGUMENT
 fi
