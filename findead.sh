@@ -28,13 +28,13 @@ fileSizeKB() {
 }
 
 center() {
-  termwidth="$(tput cols)"
+  termwidth="$(tput -T xterm cols)"
   padding="$(printf '%0.1s' ={1..500})"
   printf '%*.*s %s %*.*s\n' 0 "$(((termwidth - 2 - ${#1}) / 2))" "$padding" "$1" 0 "$(((termwidth - 1 - ${#1}) / 2))" "$padding"
 }
 
 centerResult() {
-  termwidth="$(tput cols)"
+  termwidth="$(tput -T xterm cols)"
   padding="$(printf '%0.1s' ={1..500})"
   printf "\e[0m%*.*s \e[36m%s\e[0m %*.*s\n" 0 "$(((termwidth - 2 - ${#1}) / 2))" "$padding" "$1" 0 "$(((termwidth - 1 - ${#1}) / 2))" "$padding"
 }
@@ -125,13 +125,13 @@ main() {
 
 start() {
   TERM=xterm-256color
-  tput clear
-  tput cup 1 0
-  tput rev
-  tput bold
+  tput -T xterm clear
+  tput -T xterm cup 1 0
+  tput -T xterm rev
+  tput -T xterm bold
   center 'Findead is looking for components...'
-  tput sgr0
-  tput cup 3 0
+  tput -T xterm sgr0
+  tput -T xterm cup 3 0
   start=($(date +%s%N)/1000000)
   PATH_TO_FIND=$1
   main
@@ -139,6 +139,7 @@ start() {
   FINDEAD_TIME=$((end - start))
   showResult
   unset TIMEFORMAT
+
 }
 
 if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
