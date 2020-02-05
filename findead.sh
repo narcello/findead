@@ -137,7 +137,7 @@ start() {
 }
 
 if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
-  echo "findead@1.0.0"
+  echo "findead@1.0.0-alpha.1"
 elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
   cat <<EOF
 
