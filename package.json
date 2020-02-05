@@ -1,6 +1,6 @@
 {
   "name": "findead",
-  "version": "0.2.1",
+  "version": "1.0.0-alpha.1",
   "description": "Dead react components finder",
   "preferGlobal": true,
   "bin": {

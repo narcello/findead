@@ -10,8 +10,14 @@ Dead react components finder
 Many times in large or even small projects, we forgot some components in code that we'll never use and we never take time to search one by one and remove.
 
 ## :camera: Demonstration
-![](https://media.giphy.com/media/iFfljysdC7VDyuFh4r/giphy.gif)
-
+![Demonstration](https://user-images.githubusercontent.com/6786382/73863397-c3d5aa00-481e-11ea-9360-0a530a93cd4a.png)
+When findead finish, you'll can see:
+* Components name
+* Path of each one component
+* Size of each one file
+* How many dead components
+* How many browsed files
+* How much time spent to execution
 ## :computer: Tech
 Just bash :) 
 
@@ -27,22 +33,19 @@ yarn add findead
 
 ## :hammer: Usage
 ```bash
-findead <folder_to_get_components> <folder_to_find_usages>
+findead <folder_to_get_components>
 ```
-1. First, pass folder to get all of your components
-2. Pass folder to search usages
+Pass folder to get all of your components
+
+___obs: By default, all `node_modules` folder is ignored.___
 
 ## :zap: Examples
-#### With two arguments
-```bash
-findead ~/path/to/get/components ~/path/to/search/usages
-```
 #### Just one argument 
 * If you pass just one argument, it will be used for `get components` and `search usages`
 ```bash
-findead ~/path/to/get/components
+findead ~/path/to/search
 ```
-#### Get components in multiple folders
+#### Multiple and specific folders
  ```bash
-findead ~/path/to/get/components/{folder1,folder2,...,folderN} ~/path/to/search/usages
+findead -m ~/path/to/search/{folder1,folder2,...,folderN}
 ```
