@@ -17,10 +17,6 @@ FILE_PATH=''
 CURRENT_FUNCTIONS=''
 MULTIPLE_PATHS=$(echo $FIRST_ARGUMENT | grep '\-.*m')
 
-formatTime() {
-  echo "scale=2;$1/1000" | bc
-}
-
 fileSizeKB() {
   FILE_SIZE_B=$(wc -c < $1)
   [[ ${FILE_SIZE_B} -lt 1024 ]] && echo "${FILE_SIZE_B} Bytes"
@@ -115,8 +111,7 @@ showResult() {
     centerResult "$COUNTER_UNUSED_COMPONENTS possible dead components :/" '\e[0m'
   fi
   BROWSED_FILES=$(echo "${FIND_RETURN/ /\n}" | wc -l)
-  FORMATED_TIME=$(formatTime $FINDEAD_TIME)
-  centerResult "$BROWSED_FILES browsed files in $FORMATED_TIME seconds"
+  centerResult "$BROWSED_FILES browsed files in $FINDEAD_TIME seconds"
 }
 
 main() {
@@ -132,12 +127,11 @@ start() {
   center 'Findead is looking for components...'
   tput -T xterm sgr0
   tput -T xterm cup 3 0
-  start=($(date +%s%N)/1000000)
   PATH_TO_FIND=$1
-  main
-  end=($(date +%s%N)/1000000)
-  FINDEAD_TIME=$((end - start))
+  { time main ; } 2> findead_execution_time.txt
+  FINDEAD_TIME=$(cat findead_execution_time.txt)
   showResult
+  rm -rf findead_execution_time.txt
   unset TIMEFORMAT
 
 }

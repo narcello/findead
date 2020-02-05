@@ -41,6 +41,6 @@ load '../node_modules/bats-assert/load'
 }
 
 @test 'Test specific comands' {
-  run echo $(du -b ./tests/components/A.js | awk '{ print $1 }')
-  assert_output '108'
+  run wc -c < ./tests/components/A.js
+  assert_line --partial '108'
 }
