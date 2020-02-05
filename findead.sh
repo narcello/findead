@@ -22,7 +22,7 @@ formatTime() {
 }
 
 fileSizeKB() {
-  FILE_SIZE_B=$(du -b $1 | awk '{ print $1 }')
+  FILE_SIZE_B=$(wc -c < $1)
   [[ ${FILE_SIZE_B} -lt 1024 ]] && echo "${FILE_SIZE_B} Bytes"
   [[ ${FILE_SIZE_B} -gt 1023 ]] && echo "$(echo ${FILE_SIZE_B}/1024 | bc) KB"
 }
