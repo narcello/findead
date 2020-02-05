@@ -137,15 +137,15 @@ start() {
 }
 
 if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
-  echo "findead@0.2.1"
+  echo "findead@1.0.0"
 elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
   cat <<EOF
 
   findead is used for looking for possible unused components(Dead components)
 
   usage:
-    findead path/to/search/components
-    findead -m path/to/search/{components,imports}
+    findead path/to/search/
+    findead -m path/to/search/{folder1,folder3}
     findead -h | --help
     findead -v | --version
 
