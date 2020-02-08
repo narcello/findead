@@ -16,6 +16,7 @@ TIMEFORMAT="%R"
 FILE_PATH=''
 CURRENT_FUNCTIONS=''
 MULTIPLE_PATHS=$(echo $FIRST_ARGUMENT | grep '\-.*m')
+RAW=$(echo $FIRST_ARGUMENT | grep '\-.*r')
 
 fileSizeKB() {
   FILE_SIZE_B=$(wc -c < $1)
@@ -97,28 +98,32 @@ searchImports() {
     if [ "$COMPONENTS_OCURRENCES" = 0 ] || [ "$COMPONENTS_OCURRENCES" = "$COMMENTED_IMPORT_OCCURRENCES" ]; then
       ((COUNTER_UNUSED_COMPONENTS++))
       FILE_SIZE=$(fileSizeKB $COMPONENT_FILE_PATH)
-      printf "\e[39m%40s | \e[35m%s | \e[33m%s %s\n" $COMPONENT_NAME $COMPONENT_FILE_PATH $FILE_SIZE
+      [[ -z $RAW ]] && printf "\e[39m%40s | \e[35m%s | \e[33m%s %s\n" $COMPONENT_NAME $COMPONENT_FILE_PATH $FILE_SIZE || echo "$COMPONENT_NAME | $COMPONENT_FILE_PATH | $FILE_SIZE"
     fi
     AUX_COUNTER=$COUNTER_UNUSED_COMPONENTS
   done
 }
 
 showResult() {
-  centerResult "Results"
+  handleResult "Results"
   if [ $COUNTER_UNUSED_COMPONENTS -eq 0 ]; then
-    centerResult "No unused components found"
+    handleResult "No unused components found"
   else
-    centerResult "$COUNTER_UNUSED_COMPONENTS possible dead components :/" '\e[0m'
+    handleResult "$COUNTER_UNUSED_COMPONENTS possible dead components :/" '\e[0m'
   fi
   BROWSED_FILES=$(echo "${FIND_RETURN/ /\n}" | wc -l)
-  centerResult "$BROWSED_FILES browsed files in $FINDEAD_TIME seconds"
+  handleResult "$BROWSED_FILES browsed files in $FINDEAD_TIME seconds"
+}
+
+handleResult() {
+  [[ -z $RAW ]] && centerResult "$1" || echo "$1"
 }
 
 main() {
   searchFiles && getComponents && searchImports
 }
 
-start() {
+initStyle() {
   TERM=xterm-256color
   tput -T xterm clear
   tput -T xterm cup 1 0
@@ -127,17 +132,20 @@ start() {
   center 'Findead is looking for components...'
   tput -T xterm sgr0
   tput -T xterm cup 3 0
+}
+
+start() {
+  [[ -z $RAW ]] && initStyle
   PATH_TO_FIND=$1
   { time main ; } 2> findead_execution_time.txt
   FINDEAD_TIME=$(cat findead_execution_time.txt)
   showResult
   rm -rf findead_execution_time.txt
-  unset TIMEFORMAT
-
+  [[ -z $RAW ]] && unset TIMEFORMAT
 }
 
 if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
-  echo "findead@1.0.0-alpha.1"
+  echo "findead@1.1.0"
 elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
   cat <<EOF
 
@@ -145,6 +153,7 @@ elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
 
   usage:
     findead path/to/search/
+    findead -r path/to/search/
     findead -m path/to/search/{folder1,folder3}
     findead -h | --help
     findead -v | --version
@@ -152,7 +161,7 @@ elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
   report bugs to: https://github.com/narcello/findead/issues
 
 EOF
-elif [[ ! -z $MULTIPLE_PATHS ]]; then
+elif [[ ! -z $MULTIPLE_PATHS || ! -z $RAW ]]; then
   ARRAY_PARAMS=($@)
   PATHS=${ARRAY_PARAMS[@]/$1}
   start "$PATHS"
