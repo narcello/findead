@@ -40,6 +40,16 @@ load '../node_modules/bats-assert/load'
   assert_line --partial 'findead -h | --help'
 }
 
+@test 'Test -r predicate' {
+  run echo "$(./findead.sh -r ./tests | grep -o 'No unused components found')"
+  assert_output 'No unused components found'
+}
+
+@test 'Test multiples predicates' {
+  run echo "$(./findead.sh -mr ./tests/{imports_commented,components} | grep -o '10 possible dead components :/')"
+  assert_output '10 possible dead components :/'
+}
+
 @test 'Test specific comands' {
   run wc -c < ./tests/components/A.js
   assert_line --partial '108'

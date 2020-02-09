@@ -45,6 +45,11 @@ ___obs: By default, all `node_modules` folder is ignored.___
 ```bash
 findead ~/path/to/search
 ```
+#### Raw result 
+* Pass `-r` flag for raw output. Better for atribute output into a file.
+```bash
+findead -r ~/path/to/search
+```
 #### Multiple and specific folders
  ```bash
 findead -m ~/path/to/search/{folder1,folder2,...,folderN}
