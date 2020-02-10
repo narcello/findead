@@ -15,11 +15,13 @@ FINDEAD_TIME=''
 TIMEFORMAT="%R"
 FILE_PATH=''
 CURRENT_FUNCTIONS=''
-MULTIPLE_PATHS=$(echo $FIRST_ARGUMENT | grep '\-.*m')
-RAW=$(echo $FIRST_ARGUMENT | grep '\-.*r')
+if [ $# -gt 1 ]; then
+  MULTIPLE_PATHS=$(echo $FIRST_ARGUMENT | grep '\-.*m')
+  RAW=$(echo $FIRST_ARGUMENT | grep '\-.*r')
+fi
 
 fileSizeKB() {
-  FILE_SIZE_B=$(wc -c < $1)
+  FILE_SIZE_B=$(wc -c <$1)
   [[ ${FILE_SIZE_B} -lt 1024 ]] && echo "${FILE_SIZE_B} Bytes"
   [[ ${FILE_SIZE_B} -gt 1023 ]] && echo "$(echo ${FILE_SIZE_B}/1024 | bc) KB"
 }
@@ -137,7 +139,7 @@ initStyle() {
 start() {
   [[ -z $RAW ]] && initStyle
   PATH_TO_FIND=$1
-  { time main ; } 2> findead_execution_time.txt
+  { time main; } 2>findead_execution_time.txt
   FINDEAD_TIME=$(cat findead_execution_time.txt)
   showResult
   rm -rf findead_execution_time.txt
@@ -163,7 +165,7 @@ elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
 EOF
 elif [[ ! -z $MULTIPLE_PATHS || ! -z $RAW ]]; then
   ARRAY_PARAMS=($@)
-  PATHS=${ARRAY_PARAMS[@]/$1}
+  PATHS=${ARRAY_PARAMS[@]:1}
   start "$PATHS"
 else
   start $FIRST_ARGUMENT
