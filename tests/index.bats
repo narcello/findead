@@ -4,17 +4,17 @@ load '../node_modules/bats-support/load'
 load '../node_modules/bats-assert/load'
 
 @test 'Test used component' {
-  run echo "$(./findead.sh -m ./tests/{imports,components} | grep -o 'No unused components found')"
+  run echo "$(./findead.sh -m tests/{imports,components} | grep -o 'No unused components found')"
   assert_output "No unused components found"
 }
 
 @test 'Test unused component(without imports)' {
-  run echo "$(./findead.sh ./tests/components | grep -o '10 possible dead components :/')"
+  run echo "$(./findead.sh tests/components | grep -o '10 possible dead components :/')"
   assert_output "10 possible dead components :/"
 }
 
 @test 'Test unused component(commented imports)' {
-  run echo "$(./findead.sh -m ./tests/{imports_commented,components} | grep -o '10 possible dead components :/')"
+  run echo "$(./findead.sh -m tests/{imports_commented,components} | grep -o '10 possible dead components :/')"
   assert_output "10 possible dead components :/"
 }
 
@@ -41,12 +41,12 @@ load '../node_modules/bats-assert/load'
 }
 
 @test 'Test -r predicate' {
-  run echo "$(./findead.sh -r ./tests | grep -o 'No unused components found')"
+  run echo "$(./findead.sh -r tests | grep -o 'No unused components found')"
   assert_output 'No unused components found'
 }
 
 @test 'Test multiples predicates' {
-  run echo "$(./findead.sh -mr ./tests/{imports_commented,components} | grep -o '10 possible dead components :/')"
+  run echo "$(./findead.sh -mr tests/{imports_commented,components} | grep -o '10 possible dead components :/')"
   assert_output '10 possible dead components :/'
 }
 
