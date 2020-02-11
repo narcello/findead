@@ -15,11 +15,13 @@ FINDEAD_TIME=''
 TIMEFORMAT="%R"
 FILE_PATH=''
 CURRENT_FUNCTIONS=''
-MULTIPLE_PATHS=$(echo $FIRST_ARGUMENT | grep '\-.*m')
-RAW=$(echo $FIRST_ARGUMENT | grep '\-.*r')
+if [ $# -gt 1 ]; then
+  MULTIPLE_PATHS=$(echo $FIRST_ARGUMENT | grep '\-.*m')
+  RAW=$(echo $FIRST_ARGUMENT | grep '\-.*r')
+fi
 
 fileSizeKB() {
-  FILE_SIZE_B=$(wc -c < $1)
+  FILE_SIZE_B=$(wc -c <$1)
   [[ ${FILE_SIZE_B} -lt 1024 ]] && echo "${FILE_SIZE_B} Bytes"
   [[ ${FILE_SIZE_B} -gt 1023 ]] && echo "$(echo ${FILE_SIZE_B}/1024 | bc) KB"
 }
@@ -37,7 +39,21 @@ centerResult() {
 }
 
 searchFiles() {
-  FIND_RETURN=$(eval $"find $PATH_TO_FIND -type d -name "node_modules" -prune -o -type f \( -name "*.js" -o -name "*.jsx" \) -print")
+  FIND_RETURN=$(
+    eval $"find $PATH_TO_FIND -type f \( ! -name "*.chunk.*" ! -name "*.bundle.*" -name "*.js" -o -name "*.jsx" \) \
+    -not -path "*/node_modules/*" \
+    -not -path "*/dist/*" \
+    -not -path "*/build/*" \
+    -not -path "*/bin/*" \
+    -not -path "*/out/*" \
+    -not -path "*/output/*" \
+    -not -path "*/target/*" \
+    -not -path "*/log/*" \
+    -not -path "*/logs/*" \
+    -not -path "*/test/*" \
+    -not -path "*/tests/*" \
+    -print"
+  )
 }
 
 getClassComponents() {
@@ -137,7 +153,7 @@ initStyle() {
 start() {
   [[ -z $RAW ]] && initStyle
   PATH_TO_FIND=$1
-  { time main ; } 2> findead_execution_time.txt
+  { time main; } 2>findead_execution_time.txt
   FINDEAD_TIME=$(cat findead_execution_time.txt)
   showResult
   rm -rf findead_execution_time.txt
@@ -145,7 +161,7 @@ start() {
 }
 
 if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
-  echo "findead@1.1.0"
+  echo "findead@1.1.1"
 elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
   cat <<EOF
 
@@ -163,7 +179,7 @@ elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
 EOF
 elif [[ ! -z $MULTIPLE_PATHS || ! -z $RAW ]]; then
   ARRAY_PARAMS=($@)
-  PATHS=${ARRAY_PARAMS[@]/$1}
+  PATHS=${ARRAY_PARAMS[@]:1}
   start "$PATHS"
 else
   start $FIRST_ARGUMENT
