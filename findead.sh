@@ -41,17 +41,17 @@ centerResult() {
 searchFiles() {
   FIND_RETURN=$(
     eval $"find $PATH_TO_FIND -type f \( ! -name "*.chunk.*" ! -name "*.bundle.*" -name "*.js" -o -name "*.jsx" \) \
-    -not -path "*/node_modules/*" \
-    -not -path "*/dist/*" \
-    -not -path "*/build/*" \
-    -not -path "*/bin/*" \
-    -not -path "*/out/*" \
-    -not -path "*/output/*" \
-    -not -path "*/target/*" \
-    -not -path "*/log/*" \
-    -not -path "*/logs/*" \
-    -not -path "*/test/*" \
-    -not -path "*/tests/*" \
+    -not -path '*/node_modules/*' \
+    -not -path '*/dist/*' \
+    -not -path '*/build/*' \
+    -not -path '*/bin/*' \
+    -not -path '*/out/*' \
+    -not -path '*/output/*' \
+    -not -path '*/target/*' \
+    -not -path '*/log/*' \
+    -not -path '*/logs/*' \
+    -not -path '*/test/*' \
+    -not -path '*/tests/*' \
     -print"
   )
 }
@@ -161,7 +161,7 @@ start() {
 }
 
 if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
-  echo "findead@1.1.1"
+  echo "findead@1.1.2"
 elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
   cat <<EOF
 
