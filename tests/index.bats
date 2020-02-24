@@ -18,6 +18,11 @@ load '../node_modules/bats-assert/load'
   assert_output "10 possible dead components :/"
 }
 
+@test 'Test error: paths must precede expression' {
+  run bash -c "cd tests/components/ && ../../findead.sh | grep -o 'paths must precede expression'"
+  assert_failure
+}
+
 @test 'Test --version predicate' {
   PACKAGE_VERSION=$(cat ./package.json | grep '"version": .*,' | awk '{ print $2 }' | cut -d '"' -f 2)
   run ./findead.sh --version
