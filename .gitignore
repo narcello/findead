@@ -1,2 +1,4 @@
 node_modules
 dist
+!tests/ignored_paths/dist
+!tests/ignored_paths/node_modules

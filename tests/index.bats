@@ -59,3 +59,13 @@ load '../node_modules/bats-assert/load'
   run wc -c < ./tests/components/A.js
   assert_line --partial '108'
 }
+
+@test 'Test ignored type files' {
+  run bash -c "cd tests/ignored_types/ && ../../findead.sh | grep -o '1 browsed files in'"
+  assert_output '1 browsed files in'
+}
+
+@test 'Test ignored paths' {
+  run bash -c "cd tests/ignored_paths/ && ../../findead.sh | grep -o '1 browsed files in'"
+  assert_output '1 browsed files in'
+}
