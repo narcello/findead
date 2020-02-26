@@ -18,6 +18,11 @@ load '../node_modules/bats-assert/load'
   assert_output "10 possible dead components :/"
 }
 
+@test 'Test error: paths must precede expression' {
+  run bash -c "cd tests/components/ && ../../findead.sh | grep -o 'paths must precede expression'"
+  assert_failure
+}
+
 @test 'Test --version predicate' {
   PACKAGE_VERSION=$(cat ./package.json | grep '"version": .*,' | awk '{ print $2 }' | cut -d '"' -f 2)
   run ./findead.sh --version
@@ -53,4 +58,14 @@ load '../node_modules/bats-assert/load'
 @test 'Test specific comands' {
   run wc -c < ./tests/components/A.js
   assert_line --partial '108'
+}
+
+@test 'Test ignored type files' {
+  run bash -c "cd tests/ignored_types/ && ../../findead.sh | grep -o '1 browsed files in'"
+  assert_output '1 browsed files in'
+}
+
+@test 'Test ignored paths' {
+  run bash -c "cd tests/ignored_paths/ && ../../findead.sh | grep -o '1 browsed files in'"
+  assert_output '1 browsed files in'
 }
