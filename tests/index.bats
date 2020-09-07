@@ -9,13 +9,13 @@ load '../node_modules/bats-assert/load'
 }
 
 @test 'Test unused component(without imports)' {
-  run echo "$(./findead.sh tests/components | grep -o '10 possible dead components :/')"
-  assert_output "10 possible dead components :/"
+  run echo "$(./findead.sh tests/components | grep -o '13 possible dead components :/')"
+  assert_output "13 possible dead components :/"
 }
 
 @test 'Test unused component(commented imports)' {
-  run echo "$(./findead.sh -m tests/{imports_commented,components} | grep -o '10 possible dead components :/')"
-  assert_output "10 possible dead components :/"
+  run echo "$(./findead.sh -m tests/{imports_commented,components} | grep -o '13 possible dead components :/')"
+  assert_output "13 possible dead components :/"
 }
 
 @test 'Test error: paths must precede expression' {
@@ -51,8 +51,8 @@ load '../node_modules/bats-assert/load'
 }
 
 @test 'Test multiples predicates' {
-  run echo "$(./findead.sh -mr tests/{imports_commented,components} | grep -o '10 possible dead components :/')"
-  assert_output '10 possible dead components :/'
+  run echo "$(./findead.sh -mr tests/{imports_commented,components} | grep -o '13 possible dead components :/')"
+  assert_output '13 possible dead components :/'
 }
 
 @test 'Test specific comands' {

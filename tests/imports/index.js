@@ -8,3 +8,6 @@ import TestComponentG from "../components/G";
 import TestComponentH from "../components/H";
 import TestComponentI from "../components/I";
 import TestComponentJ2 from "../components/J";
+import TestComponentK from "../components/K";
+import TestComponentL from "../components/L";
+import TestComponentM from "../components/M";
