@@ -40,7 +40,7 @@ centerResult() {
 
 searchFiles() {
   FIND_RETURN=$(
-    eval $"find $PATH_TO_FIND -type f \( ! -name '*.chunk.*' ! -name '*.min.*' ! -name '*.bundle.*' -name '*.js' -o -name '*.jsx' \) \
+    eval $"find $PATH_TO_FIND -type f \( ! -name '*.chunk.*' ! -name '*.min.*' ! -name '*.bundle.*' -name '*.js' -o -name '*.jsx' -o -name '*.ts' -o -name '*.tsx' \) \
     -not -path '*/node_modules/*' \
     -not -path '*/dist/*' \
     -not -path '*/build/*' \
@@ -161,7 +161,7 @@ start() {
 }
 
 if [[ $FIRST_ARGUMENT == "--version" || $FIRST_ARGUMENT == "-v" ]]; then
-  echo "findead@1.1.3"
+  echo "findead@1.2.0"
 elif [[ $FIRST_ARGUMENT == "--help" || $FIRST_ARGUMENT == "-h" ]]; then
   cat <<EOF
 

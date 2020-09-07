@@ -35,7 +35,7 @@ yarn add findead
 ```bash
 findead <folder_to_get_components>
 ```
-Pass folder to get all of your components
+Pass folder to get all of your components in js, jsx, ts and tsx files.
 
 ___obs: By default, all `node_modules` folder is ignored.___
 
