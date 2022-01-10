@@ -4,7 +4,7 @@
   "description": "Dead react components finder",
   "preferGlobal": true,
   "bin": {
-    "findead": "findead.sh"
+    "findead": "node findead.js"
   },
   "author": {
     "name": "Marcello Silva",
