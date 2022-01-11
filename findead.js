@@ -8,7 +8,7 @@ const ignoredFolders = /(node_modules|dist|build|bin|out|output|coverage|target|
 
 getFiles(process.argv[2]);
 searchImports(allFiles);
-// console.log(unusedFiles);
+console.log(unusedFiles);
 
 function getFiles(startPath) {
   if (!fs.existsSync(startPath)) {
@@ -44,15 +44,11 @@ function getFiles(startPath) {
 
 // Entender como ele foi exportado -> verificar se ele ta passando por index files -> procurar por usos ou imports(lazy load)
 // Procurar se o que foi exportado está sendo usado em algum lugar.
+
 function thereIsIndexFile(directoryPath) {
-  let thereIsIndexFile = false;
-  fs.readdir(directoryPath, (err, files) => {
-    if (err) {
-      return console.log("Unable to scan directory: " + err);
-    }
-    thereIsIndexFile = files.some((file) => file.indexOf("index") > -1);
-  });
-  return thereIsIndexFile;
+  const files = fs.readdirSync(directoryPath);
+  const hasIndexFile = files.some((file) => file.indexOf("index") > -1);
+  return hasIndexFile;
 }
 
 function searchImports(filesPath) {
@@ -60,11 +56,9 @@ function searchImports(filesPath) {
     let baseName = path.basename(filePath);
     baseName = baseName.replace(path.extname(filePath), "");
 
-    // a pasta tem index?
     const fileFolder = path.dirname(filePath);
-    if (thereIsIndexFile(fileFolder)) console.log(fileFolder);
-
-    // se sim, tenho que procurar pelo import do nome da pasta.
+    const hasIndexFile = thereIsIndexFile(fileFolder);
+    if (hasIndexFile) baseName = path.basename(fileFolder);
 
     const es6ImportRegExp = constructEs6ImportRegExp(baseName);
     const es5ImportRegExp = constructEs5ImportRegExp(baseName);
