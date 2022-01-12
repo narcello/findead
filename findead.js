@@ -67,6 +67,14 @@ function searchImports(filesPath) {
     const isUsedFile = array.some((file) => {
       try {
         const data = fs.readFileSync(file, "utf8");
+        const [es6Ret] = es6ImportRegExp.exec(data);
+        const [es5Ret] = es5ImportRegExp.exec(data);
+        const [lazyLoadRet] = lazyLoadImportRegExp.exec(data);
+
+        if (es6Ret) {
+          singleLineCommentRegExp().test(es6Ret);
+        }
+
         return (
           es6ImportRegExp.test(data) ||
           es5ImportRegExp.test(data) ||
@@ -81,7 +89,7 @@ function searchImports(filesPath) {
 }
 
 function constructEs6ImportRegExp(baseName) {
-  return new RegExp(`import.*from (\\"|\\')(.*)${baseName}(\\"|\\')`, "gm");
+  return new RegExp(`(.*)import.*from (\\"|\\')(.*)${baseName}(\\"|\\')`, "gm");
 }
 
 function constructEs5ImportRegExp(baseName) {
@@ -90,4 +98,8 @@ function constructEs5ImportRegExp(baseName) {
 
 function constructLazyLoadImportRegExp(baseName) {
   return new RegExp(`import\\((\\"|\\')(.*)${baseName}(\\"|\\')\\)`, "gm");
+}
+
+function singleLineCommentRegExp() {
+  return new RegExp("//", "g");
 }
