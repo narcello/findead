@@ -1,4 +1,4 @@
-import TestComponentA from "../components/A";
+import TestComponentA from "../components/A"; // comment after import
 import TestComponentB from "../components/B";
 import TestComponentC from "../components/C";
 import TestComponentD from "../components/D";
@@ -10,5 +10,5 @@ import TestComponentI from "../components/I";
 import TestComponentJ2 from "../components/J";
 import TestComponentK from "../components/K";
 import TestComponentL from "../components/L";
-import TestComponentM from "../components/M";
 import FolderWithIndexFile from "../components/FolderWithIndexFile";
+const TestComponentM = require("../components/M"); // comment after import
