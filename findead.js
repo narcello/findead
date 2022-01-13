@@ -88,17 +88,22 @@ function searchImports(filesPath) {
 }
 
 function constructEs6ImportRegExp(baseName) {
-  return new RegExp(`(.*)import.*from (\\"|\\')(.*)${baseName}(\\"|\\')`, "gm");
+  return new RegExp(`(.*)import.*from (\\"|\\')(.*)${baseName}(\\"|\\')`, "g");
 }
 
 function constructEs5ImportRegExp(baseName) {
-  return new RegExp(`(.*)require\\((\\"|\\')(.*)${baseName}(\\"|\\')\\)`, "gm");
+  return new RegExp(`(.*)require\\((\\"|\\')(.*)${baseName}(\\"|\\')\\)`, "g");
 }
 
 function constructLazyLoadImportRegExp(baseName) {
-  return new RegExp(`(.*)import\\((\\"|\\')(.*)${baseName}(\\"|\\')\\)`, "gm");
+  return new RegExp(`(.*)import\\((\\"|\\')(.*)${baseName}(\\"|\\')\\)`, "g");
 }
 
 function singleLineCommentRegExp() {
   return new RegExp("//", "g");
+}
+
+function multiLineCommentRegExp() {
+  return new RegExp("\\/\\*[\\s\\S]*\\*\\/", "g");
+  // \/\*[\s\S]*((.*)import.*from (\"|\')(.*)J(\"|\'))
 }
