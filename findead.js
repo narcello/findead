@@ -68,17 +68,13 @@ function searchImports(filesPath) {
       try {
         const data = fs.readFileSync(file, "utf8");
 
-        const es6Match = es6ImportRegExp.exec(data);
-        const es5Match = es5ImportRegExp.exec(data);
-        const lazyLoadMatch = lazyLoadImportRegExp.exec(data);
+        const dataWithoutComments = removeComments(data);
 
-        if (es6Match) {
-          return !singleLineCommentRegExp().test(es6Match[0]);
-        } else if (es5Match) {
-          return !singleLineCommentRegExp().test(es5Match[0]);
-        } else if (lazyLoadMatch) {
-          return !singleLineCommentRegExp().test(lazyLoadMatch[0]);
-        }
+        return (
+          es6ImportRegExp.test(dataWithoutComments) ||
+          es5ImportRegExp.test(dataWithoutComments) ||
+          lazyLoadImportRegExp.test(dataWithoutComments)
+        );
       } catch (err) {
         console.error(err);
       }
@@ -100,10 +96,15 @@ function constructLazyLoadImportRegExp(baseName) {
 }
 
 function singleLineCommentRegExp() {
-  return new RegExp("//", "g");
+  return new RegExp("//.*", "g");
 }
 
 function multiLineCommentRegExp() {
   return new RegExp("\\/\\*[\\s\\S]*\\*\\/", "g");
-  // \/\*[\s\S]*((.*)import.*from (\"|\')(.*)J(\"|\'))
+}
+
+function removeComments(data) {
+  return data
+    .replace(multiLineCommentRegExp(), "")
+    .replace(singleLineCommentRegExp(), "");
 }
