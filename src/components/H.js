@@ -1,5 +1,5 @@
 import React from "react";
 
-const TestComponentH = (props) => { }
+const TestComponentH = (props) => {};
 
 export default TestComponentH;

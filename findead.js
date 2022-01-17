@@ -30,21 +30,6 @@ function getFiles(startPath) {
   }
 }
 
-// Arquivos com nome 'index' nao precisam ser verificado se tem import
-// deverá ser prcurado pelo import do nome do folder
-// verificar comentarios
-
-// pastas que contem o arquivo index podem ser importadas em outros aquivos index
-
-// como ver se um component está sendo usado
-// itens para se verificar
-// tipo do export
-// se tem index na pasta
-// tipo do import
-
-// Entender como ele foi exportado -> verificar se ele ta passando por index files -> procurar por usos ou imports(lazy load)
-// Procurar se o que foi exportado está sendo usado em algum lugar.
-
 function thereIsIndexFile(directoryPath) {
   const files = fs.readdirSync(directoryPath);
   const hasIndexFile = files.some((file) => file.indexOf("index") > -1);

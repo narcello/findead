@@ -1,4 +1,4 @@
 //@ts-ignore
 import React from "react";
 
-export const TestComponentM = () => { }
+export const TestComponentM = () => {};

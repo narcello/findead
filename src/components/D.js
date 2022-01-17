@@ -1,5 +1,5 @@
 import React from "react";
 
-function TestComponentD() { }
+function TestComponentD() {}
 
 export default TestComponentD;

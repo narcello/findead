@@ -1,5 +1,5 @@
 import { PureComponent } from "react";
 
-class TestComponentC extends PureComponent { }
+class TestComponentC extends PureComponent {}
 
 export default TestComponentC;
