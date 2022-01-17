@@ -32,6 +32,7 @@
   "devDependencies": {
     "bats-assert": "git+https://github.com/ztombol/bats-assert.git",
     "bats-support": "git+https://github.com/ztombol/bats-support.git",
+    "eslint": "^8.7.0",
     "vuepress": "1.5.4"
   }
 }
