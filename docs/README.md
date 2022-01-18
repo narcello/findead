@@ -1,5 +1,6 @@
-Adicionar eslint
+Adicionar eslint - ok
 Tentar passar para typescript
+Adicionar o husky(pre-commit)
 Atualizar os testes
 Atualizar readme
 Analizar o código e ver o fluxo
