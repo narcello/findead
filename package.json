@@ -4,7 +4,7 @@
   "description": "Dead react components finder",
   "preferGlobal": true,
   "bin": {
-    "findead": "node findead.js"
+    "findead": "node ./dist/findead.js"
   },
   "author": {
     "name": "Marcello Silva",
@@ -16,7 +16,8 @@
     "site:dev": "vuepress dev docs",
     "site:build": "vuepress build docs",
     "site:deploy": "./scripts/deploy_site.sh",
-    "npm:deploy": "./scripts/deploy_package.sh"
+    "npm:deploy": "./scripts/deploy_package.sh",
+    "build": "rm -rf ./dist/* && tsc"
   },
   "repository": "https://github.com/narcello/findead",
   "homepage": "https://narcello.github.io/findead",
@@ -35,6 +36,7 @@
     "eslint": "^8.7.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
+    "typescript": "^4.5.4",
     "vuepress": "1.5.4"
   }
 }
