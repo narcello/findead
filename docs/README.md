@@ -1,10 +1,14 @@
 Adicionar eslint - ok
-Tentar passar para typescript
-Adicionar o husky(pre-commit)
+Tentar passar para typescript - ok
+Adicionar o husky(pre-commit - test e commit lint msg) - ok
 Atualizar os testes
 Atualizar readme
 Analizar o código e ver o fluxo
 Anotar possíveis melhorias
+Remover tudo do antigo
+  findead.sh
+  index.bats
+  dependencies
 
 # :mag: findead
 
