@@ -1,21 +1,21 @@
-const path = require('path');
-const fs = require('fs');
+import path from 'path';
+import fs from 'fs';
 
-const allFiles = [];
-const unusedFiles = [];
+const allFiles: string[] = [];
+const unusedFiles: string[] = [];
 
 const regexFilesTypes = /(?<!chunk|min|stories|test|bundle|setup)\.(js|ts|jsx|tsx)/;
 const ignoredFolders = /(node_modules|dist|build|bin|out|output|coverage|target|log|logs|test|tests|.storybook)/;
 
-function constructEs6ImportRegExp(baseName) {
+function constructEs6ImportRegExp(baseName: string) {
   return new RegExp(`(.*)import.*from (\\"|\\')(.*)${baseName}(\\"|\\')`, 'g');
 }
 
-function constructEs5ImportRegExp(baseName) {
+function constructEs5ImportRegExp(baseName: string) {
   return new RegExp(`(.*)require\\((\\"|\\')(.*)${baseName}(\\"|\\')\\)`, 'g');
 }
 
-function constructLazyLoadImportRegExp(baseName) {
+function constructLazyLoadImportRegExp(baseName: string) {
   return new RegExp(`(.*)import\\((\\"|\\')(.*)${baseName}(\\"|\\')\\)`, 'g');
 }
 
@@ -27,13 +27,13 @@ function multiLineCommentRegExp() {
   return /\/\*[\s\S]*\*\//g;
 }
 
-function removeComments(data) {
+function removeComments(data: string) {
   return data
     .replace(multiLineCommentRegExp(), '')
     .replace(singleLineCommentRegExp(), '');
 }
 
-function getFiles(startPath) {
+function getFiles(startPath: string) {
   if (!fs.existsSync(startPath)) {
     console.log('no dir ', startPath);
     return;
@@ -53,14 +53,14 @@ function getFiles(startPath) {
   }
 }
 
-function thereIsIndexFile(directoryPath) {
+function thereIsIndexFile(directoryPath: string) {
   const files = fs.readdirSync(directoryPath);
-  const hasIndexFile = files.some((file) => file.indexOf('index') > -1);
+  const hasIndexFile = files.some((file: string) => file.indexOf('index') > -1);
   return hasIndexFile;
 }
 
-function searchImports(filesPath) {
-  filesPath.forEach((filePath, index, array) => {
+function searchImports(filesPath: string[]) {
+  filesPath.forEach((filePath, _index, array) => {
     let baseName = path.basename(filePath);
     baseName = baseName.replace(path.extname(filePath), '');
 
