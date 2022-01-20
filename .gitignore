@@ -1,4 +1,5 @@
 node_modules
 dist
+coverage
 !tests/ignored_paths/dist
 !tests/ignored_paths/node_modules
