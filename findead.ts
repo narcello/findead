@@ -59,8 +59,15 @@ function thereIsIndexFile(directoryPath: string) {
   return hasIndexFile;
 }
 
+function thereIsExportOnFile(filePath: string) {
+  const data = fs.readFileSync(filePath, 'utf8');
+  return data.indexOf('export') > -1;
+}
+
 function searchImports(filesPath: string[]) {
   filesPath.forEach((filePath, _index, array) => {
+    if(!thereIsExportOnFile(filePath)) return;
+
     let baseName = path.basename(filePath);
     baseName = baseName.replace(path.extname(filePath), '');
 
@@ -92,8 +99,18 @@ function searchImports(filesPath: string[]) {
   });
 }
 
-console.time();
-getFiles(process.argv[2]);
-searchImports(allFiles);
-console.log(unusedFiles);
-console.timeEnd();
+function showResult() {
+  if(unusedFiles.length > 0) 
+    console.log(unusedFiles)
+  else console.log('No unused files :)')
+}
+
+function startFindead() {
+  console.time();
+  getFiles(process.argv[2]);
+  searchImports(allFiles);
+  showResult();
+  console.timeEnd();
+}
+
+startFindead();
