@@ -2,6 +2,7 @@ Adicionar eslint - ok
 Tentar passar para typescript - ok
 Adicionar o husky(pre-commit - test e commit lint msg) - ok
 Atualizar os testes
+Atualizar eslint com ts
 Atualizar readme
 Analizar o código e ver o fluxo
 Anotar possíveis melhorias
