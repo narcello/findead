@@ -100,17 +100,29 @@ function searchImports(filesPath: string[]) {
 }
 
 function showResult() {
-  if(unusedFiles.length > 0) 
-    console.log(unusedFiles)
-  else console.log('No unused files :)')
+  if(unusedFiles.length > 0) {
+    console.log(unusedFiles);
+    console.log(`${unusedFiles.length} unused components 😓`)
+  }
+  else console.log('No unused components 🎉')
 }
 
 function startFindead() {
-  console.time();
-  getFiles(process.argv[2]);
-  searchImports(allFiles);
-  showResult();
-  console.timeEnd();
+  const flagPositionArg = process.argv[2];
+  if(flagPositionArg === '-v' || flagPositionArg === '--version') {
+    console.log('TODO -v')
+  }
+  else if(flagPositionArg === '-h' || flagPositionArg === '--help') {
+    console.log('TODO -h')
+  }
+  else {
+    console.time();
+    process.argv.splice(0, 2);
+    process.argv.forEach(getFiles);
+    searchImports(allFiles);
+    showResult();
+    console.timeEnd();
+  }
 }
 
 startFindead();
