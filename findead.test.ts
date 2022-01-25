@@ -1,24 +1,31 @@
 import { exec } from 'child_process'
 
-jest.useFakeTimers('legacy')
-jest.setTimeout(10000)
-
 describe('Findead', () => {
   it('Should validate used component', (done) => {
-    const script = 'ts-node ./findead.ts src'
+    const script = 'ts-node ./findead.ts src';
     exec(script, (error, stdout, stderr) => {
-      done()
+      done();
       if(error || stderr) done();
-      expect(stdout.indexOf('No unused files :)')).toBeGreaterThan(-1)
+      expect(stdout.indexOf('No unused components')).toBeGreaterThan(-1);
     });
   });
   
-  it.skip('Should validate unused component(without imports)', (done) => {
-    const script = 'ts-node ./findead.ts src/components'
+  it('Should validate unused component(without imports)', (done) => {
+    const script = 'ts-node ./findead.ts src/components';
+    exec(script, (error, stdout, stderr) => {
+      done();
+      if(error || stderr) done();
+      expect(stdout.indexOf('16 unused components')).toBeGreaterThan(-1);
+    });
   });
   
-  it.skip('Should validate unused component(commented imports)', (done) => {
-    const script = 'ts-node ./findead.ts src/components'
+  it('Should validate unused component(commented imports)', (done) => {
+    const script = 'ts-node ./findead.ts src/components src/1.imports_commented'
+    exec(script, (error, stdout, stderr) => {
+      done();
+      if(error || stderr) done();
+      expect(stdout.indexOf('16 unused components')).toBeGreaterThan(-1);
+    });
   });
   
   it.skip('Should validate error: paths must precede expression', (done) => {
