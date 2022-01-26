@@ -109,8 +109,12 @@ function showResult() {
 
 function startFindead() {
   const flagPositionArg = process.argv[2];
+  if(!flagPositionArg) {
+    console.log('No arguments')
+    return;
+  }
   if(flagPositionArg === '-v' || flagPositionArg === '--version') {
-    console.log('TODO -v')
+    console.log('1.2.2')
   }
   else if(flagPositionArg === '-h' || flagPositionArg === '--help') {
     console.log('TODO -h')
