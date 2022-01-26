@@ -28,16 +28,41 @@ describe('Findead', () => {
     });
   });
   
-  it.skip('Should validate error: paths must precede expression', (done) => {
-    const script = 'ts-node ./findead.ts src/components'
+  it.skip('Should validate unused component(commented imports)', (done) => {
+    const script = 'ts-node ./findead.ts src/{components,1.imports_commented}'
+    exec(script, (error, stdout, stderr) => {
+      console.log(stdout); 
+      done();
+      if(error || stderr) done();
+      expect(stdout.indexOf('16 unused components')).toBeGreaterThan(-1);
+    });
   });
   
-  it.skip('Should validate --version predicate', (done) => {
-    const script = 'ts-node ./findead.ts src/components'
+  it('Should validate error: no arguments', (done) => {
+    const script = 'ts-node ./findead.ts'
+    exec(script, (error, stdout, stderr) => {
+      done();
+      if(error || stderr) done();
+      expect(stdout.indexOf('No arguments')).toBeGreaterThan(-1);
+    });
   });
   
-  it.skip('Should validate -v predicate', (done) => {
-    const script = 'ts-node ./findead.ts src/components'
+  it('Should validate --version predicate', (done) => {
+    const script = 'ts-node ./findead.ts --version'
+    exec(script, (error, stdout, stderr) => {
+      done();
+      if(error || stderr) console.log(error, stderr);
+      expect(stdout.indexOf('1.2.2')).toBeGreaterThan(-1);
+    });
+  });
+  
+  it('Should validate -v predicate', (done) => {
+    const script = 'ts-node ./findead.ts -v'
+    exec(script, (error, stdout, stderr) => {
+      done();
+      if(error || stderr) console.log(error, stderr);
+      expect(stdout.indexOf('1.2.2')).toBeGreaterThan(-1);
+    });
   });
   
   it.skip('Should validate --help predicate', (done) => {
