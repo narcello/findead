@@ -107,6 +107,15 @@ function showResult() {
   else console.log('No unused components 🎉')
 }
 
+const help = {
+  'usage': 'findead path/to/search',
+  'multiple folders': 'findead path/to/{folderA,folderB}',
+  '-v': 'Get the findead version', 
+  '--version': 'Get the findead version',
+  '-h': 'Get the findead help',
+  '--help': 'Get the findead help',
+}
+
 function startFindead() {
   const flagPositionArg = process.argv[2];
   if(!flagPositionArg) {
@@ -117,7 +126,7 @@ function startFindead() {
     console.log('1.2.2')
   }
   else if(flagPositionArg === '-h' || flagPositionArg === '--help') {
-    console.log('TODO -h')
+    console.table(help)
   }
   else {
     console.time();
