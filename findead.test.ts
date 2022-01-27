@@ -5,8 +5,8 @@ describe('Findead', () => {
     const script = 'ts-node ./findead.ts src';
     exec(script, (error, stdout, stderr) => {
       done();
-      if(error || stderr) done();
-      expect(stdout.indexOf('No unused components')).toBeGreaterThan(-1);
+      if(error || stderr) console.error(error, stderr);
+      expect(stdout).toContain('No unused components');
     });
   });
   
@@ -14,8 +14,8 @@ describe('Findead', () => {
     const script = 'ts-node ./findead.ts src/components';
     exec(script, (error, stdout, stderr) => {
       done();
-      if(error || stderr) done();
-      expect(stdout.indexOf('16 unused components')).toBeGreaterThan(-1);
+      if(error || stderr) console.error(error, stderr);
+      expect(stdout).toContain('16 unused components');
     });
   });
   
@@ -23,18 +23,17 @@ describe('Findead', () => {
     const script = 'ts-node ./findead.ts src/components src/1.imports_commented'
     exec(script, (error, stdout, stderr) => {
       done();
-      if(error || stderr) done();
-      expect(stdout.indexOf('16 unused components')).toBeGreaterThan(-1);
+      if(error || stderr) console.error(error, stderr);
+      expect(stdout).toContain('16 unused components');
     });
   });
   
   it.skip('Should validate unused component(commented imports)', (done) => {
     const script = 'ts-node ./findead.ts src/{components,1.imports_commented}'
     exec(script, (error, stdout, stderr) => {
-      console.log(stdout); 
       done();
-      if(error || stderr) done();
-      expect(stdout.indexOf('16 unused components')).toBeGreaterThan(-1);
+      if(error || stderr) console.error(error, stderr);
+      expect(stdout).toContain('16 unused components');
     });
   });
   
@@ -42,8 +41,8 @@ describe('Findead', () => {
     const script = 'ts-node ./findead.ts'
     exec(script, (error, stdout, stderr) => {
       done();
-      if(error || stderr) done();
-      expect(stdout.indexOf('No arguments')).toBeGreaterThan(-1);
+      if(error || stderr) console.error(error, stderr);
+      expect(stdout).toContain('No arguments');
     });
   });
   
@@ -51,8 +50,8 @@ describe('Findead', () => {
     const script = 'ts-node ./findead.ts --version'
     exec(script, (error, stdout, stderr) => {
       done();
-      if(error || stderr) console.log(error, stderr);
-      expect(stdout.indexOf('1.2.2')).toBeGreaterThan(-1);
+      if(error || stderr) console.error(error, stderr);
+      expect(stdout).toContain('1.2.2');
     });
   });
   
@@ -60,32 +59,70 @@ describe('Findead', () => {
     const script = 'ts-node ./findead.ts -v'
     exec(script, (error, stdout, stderr) => {
       done();
-      if(error || stderr) console.log(error, stderr);
-      expect(stdout.indexOf('1.2.2')).toBeGreaterThan(-1);
+      if(error || stderr) console.error(error, stderr);
+      expect(stdout).toContain('1.2.2');
     });
   });
   
-  it.skip('Should validate --help predicate', (done) => {
-    const script = 'ts-node ./findead.ts src/components'
+  it('Should validate --help predicate', (done) => {
+    const script = 'ts-node ./findead.ts -h'
+    exec(script, (error, stdout, stderr) => {
+      done();
+      if(error || stderr) console.error(error, stderr);
+
+      expect(stdout).toContain('usage');
+      expect(stdout).toContain('findead path/to/search');
+
+      expect(stdout).toContain('multiple folders');
+      expect(stdout).toContain('findead path/to/{folderA,folderB}');
+
+      expect(stdout).toContain('-v');
+      expect(stdout).toContain('--version');
+      expect(stdout).toContain('Get the findead version');
+
+      expect(stdout).toContain('-h');
+      expect(stdout).toContain('--help');
+      expect(stdout).toContain('Get the findead help');
+    });
   });
   
-  it.skip('Should validate -h predicate', (done) => {
-    const script = 'ts-node ./findead.ts src/components'
+  it('Should validate -h predicate', (done) => {
+    const script = 'ts-node ./findead.ts -h'
+    exec(script, (error, stdout, stderr) => {
+      done();
+      if(error || stderr) console.error(error, stderr);
+
+      expect(stdout).toContain('usage');
+      expect(stdout).toContain('findead path/to/search');
+
+      expect(stdout).toContain('multiple folders');
+      expect(stdout).toContain('findead path/to/{folderA,folderB}');
+
+      expect(stdout).toContain('-v');
+      expect(stdout).toContain('--version');
+      expect(stdout).toContain('Get the findead version');
+
+      expect(stdout).toContain('-h');
+      expect(stdout).toContain('--help');
+      expect(stdout).toContain('Get the findead help');
+    });
   });
   
-  it.skip('Should validate -r predicate', (done) => {
-    const script = 'ts-node ./findead.ts src/components'
+  it('Should validate ignored type files', (done) => {
+    const script = 'ts-node ./findead.ts src/ignored_types'
+    exec(script, (error, stdout, stderr) => {
+      done();
+      if(error || stderr) console.error(error, stderr);
+      expect(stdout).toContain('No unused components');
+    });
   });
   
-  it.skip('Should validate multiples predicate', (done) => {
-    const script = 'ts-node ./findead.ts src/components'
-  });
-  
-  it.skip('Should validate ignored type files', (done) => {
-    const script = 'ts-node ./findead.ts src/components'
-  });
-  
-  it.skip('Should validate ignored paths', (done) => {
-    const script = 'ts-node ./findead.ts src/components'
+  it('Should validate ignored paths', (done) => {
+    const script = 'ts-node ./findead.ts src/ignored_paths'
+    exec(script, (error, stdout, stderr) => {
+      done();
+      if(error || stderr) console.error(error, stderr);
+      expect(stdout).toContain('No unused components');
+    });
   });
 })
