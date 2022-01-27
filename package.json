@@ -18,7 +18,8 @@
     "site:deploy": "./scripts/deploy_site.sh",
     "npm:deploy": "./scripts/deploy_package.sh",
     "build": "rm -rf ./dist/* && tsc",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint": "eslint . --ext .ts"
   },
   "repository": "https://github.com/narcello/findead",
   "homepage": "https://narcello.github.io/findead",
@@ -38,6 +39,8 @@
     "@commitlint/cli": "^16.0.2",
     "@commitlint/config-conventional": "^16.0.0",
     "@types/jest": "^27.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
     "babel-jest": "^27.4.6",
     "bats-assert": "git+https://github.com/ztombol/bats-assert.git",
     "bats-support": "git+https://github.com/ztombol/bats-support.git",
