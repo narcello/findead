@@ -66,7 +66,7 @@ function thereIsExportOnFile(filePath: string) {
 
 function searchImports(filesPath: string[]) {
   filesPath.forEach((filePath, _index, array) => {
-    if(!thereIsExportOnFile(filePath)) return;
+    if (!thereIsExportOnFile(filePath)) return;
 
     let baseName = path.basename(filePath);
     baseName = baseName.replace(path.extname(filePath), '');
@@ -100,35 +100,32 @@ function searchImports(filesPath: string[]) {
 }
 
 function showResult() {
-  if(unusedFiles.length > 0) {
+  if (unusedFiles.length > 0) {
     console.log(unusedFiles);
-    console.log(`${unusedFiles.length} unused components 😓`)
-  }
-  else console.log('No unused components 🎉')
+    console.log(`${unusedFiles.length} unused components 😓`);
+  } else console.log('No unused components 🎉');
 }
 
 const help = {
-  'usage': 'findead path/to/search',
+  usage: 'findead path/to/search',
   'multiple folders': 'findead path/to/{folderA,folderB}',
-  '-v': 'Get the findead version', 
+  '-v': 'Get the findead version',
   '--version': 'Get the findead version',
   '-h': 'Get the findead help',
   '--help': 'Get the findead help',
-}
+};
 
 function startFindead() {
   const flagPositionArg = process.argv[2];
-  if(!flagPositionArg) {
-    console.log('No arguments')
+  if (!flagPositionArg) {
+    console.log('No arguments');
     return;
   }
-  if(flagPositionArg === '-v' || flagPositionArg === '--version') {
-    console.log('1.2.2')
-  }
-  else if(flagPositionArg === '-h' || flagPositionArg === '--help') {
-    console.table(help)
-  }
-  else {
+  if (flagPositionArg === '-v' || flagPositionArg === '--version') {
+    console.log('1.2.2');
+  } else if (flagPositionArg === '-h' || flagPositionArg === '--help') {
+    console.table(help);
+  } else {
     console.time();
     process.argv.splice(0, 2);
     process.argv.forEach(getFiles);
