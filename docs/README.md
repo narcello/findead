@@ -10,6 +10,8 @@ Adicionar ao resultado do código
 - Size of each one file - ok
 - How many dead components - ok 
 - How many browsed files - ok 
+- make result looks like current version
+- calculate filesize and shor corretct unity
 
 Atualizar a imagem do readme na demonstração
 Colocar husky pra rodar só qnd tiver mudanca em .js .ts .jsx .tsx
