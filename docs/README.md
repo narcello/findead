@@ -7,9 +7,9 @@ add format on save - ok
 Atualizar readme - ok
 
 Adicionar ao resultado do código
-- Size of each one file
-- How many dead components
-- How many browsed files
+- Size of each one file - ok
+- How many dead components - ok 
+- How many browsed files - ok 
 
 Atualizar a imagem do readme na demonstração
 Colocar husky pra rodar só qnd tiver mudanca em .js .ts .jsx .tsx

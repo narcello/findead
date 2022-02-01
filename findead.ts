@@ -99,11 +99,21 @@ function searchImports(filesPath: string[]) {
   });
 }
 
+function getFileSize(filepath: string) {
+  const stat = fs.lstatSync(filepath);
+  return stat.size;
+}
+
 function showResult() {
   if (unusedFiles.length > 0) {
-    console.log(unusedFiles);
+    unusedFiles.forEach((file) => {
+      const fileSize = getFileSize(file);
+      console.log(file, '-', fileSize, 'bytes');
+    });
+    console.log('\n');
     console.log(`${unusedFiles.length} unused components 😓`);
   } else console.log('No unused components 🎉');
+  console.log(`${allFiles.length} browsed files`);
 }
 
 const help = {
