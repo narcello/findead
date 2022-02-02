@@ -108,7 +108,7 @@ function showResult() {
   if (unusedFiles.length > 0) {
     unusedFiles.forEach((file) => {
       const fileSize = getFileSize(file);
-      console.log(file, '-', fileSize, 'bytes');
+      console.log('\x1b[36m%s\x1b[0m', file, '-', fileSize, 'bytes');
     });
     console.log('\n');
     console.log(`${unusedFiles.length} unused components 😓`);
@@ -137,6 +137,9 @@ function startFindead() {
     console.table(help);
   } else {
     console.time();
+    console.clear();
+    console.log('\x1b[33m%s\x1b[0m', 'Findead is looking for components...');
+    console.log('\n');
     process.argv.splice(0, 2);
     process.argv.forEach(getFiles);
     searchImports(allFiles);
