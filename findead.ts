@@ -1,6 +1,8 @@
 import path from 'path';
 import fs from 'fs';
 
+const { log } = console;
+
 const allFiles: string[] = [];
 const unusedFiles: string[] = [];
 
@@ -35,7 +37,7 @@ function removeComments(data: string) {
 
 function getFiles(startPath: string) {
   if (!fs.existsSync(startPath)) {
-    console.log('no dir ', startPath);
+    log('no dir ', startPath);
     return;
   }
 
@@ -113,12 +115,12 @@ function formatFileSize(fileSize: number) {
 function showResult() {
   if (unusedFiles.length > 0) {
     unusedFiles.forEach((file) => {
-      console.log('\x1b[36m%s\x1b[0m', file, '-', formatFileSize(getFileSize(file)));
+      log('\x1b[36m%s\x1b[0m', file, '-', formatFileSize(getFileSize(file)));
     });
-    console.log('\n');
-    console.log(`${unusedFiles.length} unused components 😓`);
-  } else console.log('No unused components 🎉');
-  console.log(`${allFiles.length} browsed files`);
+    log('\n');
+    log(`${unusedFiles.length} unused components 😓`);
+  } else log('No unused components 🎉');
+  log(`${allFiles.length} browsed files`);
 }
 
 const help = {
@@ -133,18 +135,18 @@ const help = {
 function startFindead() {
   const flagPositionArg = process.argv[2];
   if (!flagPositionArg) {
-    console.log('No arguments');
+    log('No arguments');
     return;
   }
   if (flagPositionArg === '-v' || flagPositionArg === '--version') {
-    console.log('1.2.2');
+    log('1.2.2');
   } else if (flagPositionArg === '-h' || flagPositionArg === '--help') {
     console.table(help);
   } else {
     console.time();
     console.clear();
-    console.log('\x1b[33m%s\x1b[0m', 'Findead is looking for components...');
-    console.log('\n');
+    log('\x1b[33m%s\x1b[0m', 'Findead is looking for components...');
+    log('\n');
     process.argv.splice(0, 2);
     process.argv.forEach(getFiles);
     searchImports(allFiles);
