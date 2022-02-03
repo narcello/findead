@@ -104,11 +104,16 @@ function getFileSize(filepath: string) {
   return stat.size;
 }
 
+function formatFileSize(fileSize: number) {
+  let result;
+  if (fileSize <= 1023) { result = `${fileSize} bytes`; } else result = `${(fileSize / 1024).toFixed(2)} KB`;
+  return `\x1b[33m${result}\x1b[0m`;
+}
+
 function showResult() {
   if (unusedFiles.length > 0) {
     unusedFiles.forEach((file) => {
-      const fileSize = getFileSize(file);
-      console.log('\x1b[36m%s\x1b[0m', file, '-', fileSize, 'bytes');
+      console.log('\x1b[36m%s\x1b[0m', file, '-', formatFileSize(getFileSize(file)));
     });
     console.log('\n');
     console.log(`${unusedFiles.length} unused components 😓`);
