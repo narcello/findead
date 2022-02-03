@@ -11,9 +11,9 @@ Adicionar ao resultado do código
 - How many dead components - ok 
 - How many browsed files - ok 
 - make result looks like current version - just add some color - ok
-- calculate filesize and show correct unity
+- calculate filesize and show correct unity - ok
+Atualizar a imagem do readme na demonstração - ok
 
-Atualizar a imagem do readme na demonstração
 Colocar husky pra rodar só qnd tiver mudanca em .js .ts .jsx .tsx
 Colocar o husky pra testar antes a mensagem do commit e depois os testes
 Analizar o código e ver o fluxo
@@ -37,7 +37,7 @@ Many times in large or even small projects, we forgot some components in code th
 
 ## :camera: Demonstration
 
-![Demonstration](https://user-images.githubusercontent.com/6786382/73863397-c3d5aa00-481e-11ea-9360-0a530a93cd4a.png)
+![Demonstration](https://user-images.githubusercontent.com/6786382/152322590-c2d40b74-f59c-4d05-97f2-08b4dde9481c.png)
 When findead finish, you'll can see:
 
 - Path of each one component
