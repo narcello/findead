@@ -7,7 +7,7 @@ const allFiles: string[] = [];
 const unusedFiles: string[] = [];
 
 const regexFilesTypes = /(?<!chunk|min|stories|test|bundle|setup)\.(js|ts|jsx|tsx)/;
-const ignoredFolders = /(node_modules|dist|build|bin|out|output|coverage|target|log|logs|test|tests|.storybook)/;
+const ignoredFolders = /(node_modules|dist|build|bin|out|output|coverage|target|log|logs|test|tests|.storybook|__generated__)/;
 
 function constructEs6ImportRegExp(baseName: string) {
   return new RegExp(`(.*)import.*from (\\"|\\')(.*)${baseName}(\\"|\\')`, 'g');
