@@ -14,14 +14,18 @@ Adicionar ao resultado do código
 - calculate filesize and show correct unity - ok
 Atualizar a imagem do readme na demonstração - ok
 
-Colocar husky pra rodar só qnd tiver mudanca em .js .ts .jsx .tsx
-Colocar o husky pra testar antes a mensagem do commit e depois os testes
-Analizar o código e ver o fluxo
-Anotar possíveis melhorias
+testar local com projetos
 Remover tudo do antigo
   findead.sh
   index.bats
   dependencies
+deploy
+
+
+Colocar husky pra rodar só qnd tiver mudanca em .js .ts .jsx .tsx
+Colocar o husky pra testar antes a mensagem do commit e depois os testes
+Analizar o código e ver o fluxo
+Anotar possíveis melhorias
 
 # :mag: findead
 
