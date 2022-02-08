@@ -139,7 +139,7 @@ function startFindead() {
     return;
   }
   if (flagPositionArg === '-v' || flagPositionArg === '--version') {
-    log('1.2.2');
+    log('2.0.0-alfa');
   } else if (flagPositionArg === '-h' || flagPositionArg === '--help') {
     console.table(help);
   } else {

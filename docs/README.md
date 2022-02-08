@@ -1,32 +1,3 @@
-Adicionar eslint - ok
-Tentar passar para typescript - ok
-Adicionar o husky(pre-commit - test e commit lint msg) - ok
-Atualizar os testes - ok
-Atualizar eslint com ts - ok
-add format on save - ok
-Atualizar readme - ok
-
-Adicionar ao resultado do código
-- Size of each one file - ok
-- How many dead components - ok 
-- How many browsed files - ok 
-- make result looks like current version - just add some color - ok
-- calculate filesize and show correct unity - ok
-Atualizar a imagem do readme na demonstração - ok
-
-testar local com projetos
-Remover tudo do antigo
-  findead.sh
-  index.bats
-  dependencies
-deploy
-
-
-Colocar husky pra rodar só qnd tiver mudanca em .js .ts .jsx .tsx
-Colocar o husky pra testar antes a mensagem do commit e depois os testes
-Analizar o código e ver o fluxo
-Anotar possíveis melhorias
-
 # :mag: findead
 
 Dead react components finder
