@@ -1,5 +1,7 @@
 import { exec } from 'child_process';
 
+jest.useFakeTimers('legacy');
+
 describe('Findead', () => {
   it('Should validate used component', (done) => {
     const script = 'ts-node ./findead.ts src';
