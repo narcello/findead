@@ -66,8 +66,30 @@ function thereIsExportOnFile(filePath: string) {
   return data.indexOf('export') > -1;
 }
 
+function isUsedFile(filesPath: string[], baseName: string): boolean {
+  const es6ImportRegExp = constructEs6ImportRegExp(baseName);
+  const es5ImportRegExp = constructEs5ImportRegExp(baseName);
+  const lazyLoadImportRegExp = constructLazyLoadImportRegExp(baseName);
+
+  return filesPath.some((file) => {
+    try {
+      const data = fs.readFileSync(file, 'utf8');
+
+      const dataWithoutComments = removeComments(data);
+
+      return (
+        es6ImportRegExp.test(dataWithoutComments)
+        || es5ImportRegExp.test(dataWithoutComments)
+        || lazyLoadImportRegExp.test(dataWithoutComments)
+      );
+    } catch (err) {
+      return false;
+    }
+  });
+}
+
 function searchImports(filesPath: string[]) {
-  filesPath.forEach((filePath, _index, array) => {
+  filesPath.forEach((filePath) => {
     if (!thereIsExportOnFile(filePath)) return;
 
     let baseName = path.basename(filePath);
@@ -77,27 +99,7 @@ function searchImports(filesPath: string[]) {
     const hasIndexFile = thereIsIndexFile(fileFolder);
     if (hasIndexFile) baseName = path.basename(fileFolder);
 
-    const es6ImportRegExp = constructEs6ImportRegExp(baseName);
-    const es5ImportRegExp = constructEs5ImportRegExp(baseName);
-    const lazyLoadImportRegExp = constructLazyLoadImportRegExp(baseName);
-
-    const isUsedFile = array.some((file) => {
-      try {
-        const data = fs.readFileSync(file, 'utf8');
-
-        const dataWithoutComments = removeComments(data);
-
-        return (
-          es6ImportRegExp.test(dataWithoutComments)
-          || es5ImportRegExp.test(dataWithoutComments)
-          || lazyLoadImportRegExp.test(dataWithoutComments)
-        );
-      } catch (err) {
-        return false;
-      }
-    });
-
-    if (!isUsedFile) unusedFiles.push(filePath);
+    if (!isUsedFile(filesPath, baseName)) unusedFiles.push(filePath);
   });
 }
 
