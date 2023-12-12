@@ -4,9 +4,9 @@ Dead react components finder
 
 [![NPM Version](https://img.shields.io/npm/v/findead?logo=npm)]()
 [![NPM Downloads](https://img.shields.io/npm/dw/findead?logo=npm)]()
-![Tests](https://github.com/narcello/findead/workflows/test.yml/badge.svg)
+[![Run Tests](https://github.com/narcello/findead/actions/workflows/test.yml/badge.svg)](https://github.com/narcello/findead/actions/workflows/test.yml)
 
-## :dart: Motivation: *Dead Components*
+## :rocket: *Dead Components* is the Motivation
 Many times in large or even small projects, we forgot some components in code that we'll never use and we never take time to search one by one and remove.
 
 ## :camera: Demonstration
