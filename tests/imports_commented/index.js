@@ -11,3 +11,11 @@
 // import TestComponentK from "../components/K";
 // import TestComponentL from "../components/L";
 // import TestComponentM from "../components/M";
+
+const routes = [
+    { 
+        path: '/path/to/component', 
+        exact: true, 
+        // component: lazy(() => import('../components/N'))
+    },
+]
